@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Master Psychological &amp; Behavioral Dossiers v2 — Coconut Rice (#question-of-the-day)</title>
+<style>
+:root{--bg:#0b0e14;--bg-elevated:#121722;--card:#161c28;--card-hover:#1b2231;--border:#263044;--border-soft:#1f2738;--text:#eef2f8;--text-muted:#9aa7bd;--text-dim:#707e96;--accent:#7c8cff;--accent-soft:rgba(124,140,255,.14);--verdict-bg:rgba(239,68,68,.09);--verdict-border:#f87171;--core-accent:#38bdf8;--social-accent:#34d399;--receipts-bg:rgba(251,191,36,.06);--receipts-border:#fbbf24;--quote-bg:rgba(124,140,255,.1);--quote-text:#dbe4ff;--ts-color:#a5b4fc;--flags-bg:rgba(244,63,94,.09);--flags-border:#fb7185;--shadow:0 10px 30px rgba(0,0,0,.35);--sidebar-w:300px;--radius:16px}
+[data-theme="light"]{--bg:#f3f5f9;--bg-elevated:#ffffff;--card:#ffffff;--card-hover:#f8fafd;--border:#dce3ee;--border-soft:#e9eef6;--text:#151b26;--text-muted:#4b586e;--text-dim:#738299;--accent:#4f5de8;--accent-soft:rgba(79,93,232,.1);--verdict-bg:rgba(220,38,38,.06);--verdict-border:#dc2626;--core-accent:#0284c7;--social-accent:#059669;--receipts-bg:rgba(217,119,6,.06);--receipts-border:#d97706;--quote-bg:#eef2ff;--quote-text:#0f172a;--ts-color:#4338ca;--flags-bg:rgba(225,29,72,.06);--flags-border:#e11d48;--shadow:0 8px 24px rgba(15,23,42,.07)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;-webkit-font-smoothing:antialiased}
+.progress-track{position:fixed;top:0;left:0;right:0;height:3px;background:transparent;z-index:1000;pointer-events:none}
+.progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--verdict-border),var(--accent),var(--social-accent));transition:width .08s linear}
+.layout{display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sidebar-w);background:var(--bg-elevated);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:200;transition:transform .25s ease}
+.sidebar-header{padding:20px 18px 14px;border-bottom:1px solid var(--border-soft)}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.brand-title{font-size:1.02rem;font-weight:700;letter-spacing:-.02em;margin:0}
+.brand-count{font-size:.75rem;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.search-box{position:relative;display:flex;align-items:center}
+.search-icon{position:absolute;left:11px;color:var(--text-dim);pointer-events:none;font-size:.9rem}
+.search-input{width:100%;padding:9px 32px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:.88rem;outline:none;transition:border-color .15s ease,box-shadow .15s ease}
+.search-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.clear-search{position:absolute;right:8px;background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:1rem;line-height:1;padding:4px;display:none}
+.clear-search.visible{display:block}
+.sidebar-controls{display:grid;grid-template-columns:1fr 1fr auto;gap:6px;margin-top:10px}
+.ctrl-btn{padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text-muted);font-size:.76rem;font-weight:600;cursor:pointer;transition:all .15s ease;display:inline-flex;align-items:center;justify-content:center;gap:5px}
+.ctrl-btn:hover{border-color:var(--accent);color:var(--text)}
+.nav-list{flex:1;overflow-y:auto;padding:10px 10px 24px;list-style:none;margin:0}
+.nav-list::-webkit-scrollbar{width:6px}
+.nav-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:999px}
+.nav-item a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;text-decoration:none;color:var(--text-muted);font-size:.87rem;transition:all .15s ease;border:1px solid transparent}
+.nav-item a:hover{background:var(--card-hover);color:var(--text)}
+.nav-item a.active{background:var(--accent-soft);color:var(--text);border-color:rgba(124,140,255,.25);font-weight:600}
+.nav-item.hidden-match{opacity:.38}
+.nav-dot{width:26px;height:26px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:#fff;background:hsl(var(--hue,220),65%,52%);flex-shrink:0}
+.nav-meta{min-width:0;flex:1}
+.nav-name{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.25;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:.84rem}
+.nav-handle{display:block;font-size:.72rem;color:var(--text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mobile-bar{display:none;position:sticky;top:0;z-index:150;background:var(--bg-elevated);border-bottom:1px solid var(--border);padding:12px 16px;align-items:center;justify-content:space-between;gap:12px}
+.menu-btn{padding:7px 12px;border-radius:9px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:.85rem;font-weight:600;cursor:pointer}
+.backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:180}
+.backdrop.open{display:block}
+.main-wrap{flex:1;min-width:0}
+.main{margin-left:var(--sidebar-w);padding:36px 28px 90px;min-width:0}
+.container{max-width:920px;margin:0 auto}
+.page-intro{margin-bottom:26px;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.page-intro h1{margin:0;font-size:clamp(1.45rem,2.5vw,1.95rem);letter-spacing:-.03em;line-height:1.2}
+.match-status{font-size:.86rem;color:var(--text-muted);font-weight:500}
+.cards-stack{display:flex;flex-direction:column;gap:24px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;scroll-margin-top:24px;transition:border-color .2s ease}
+.card.flash{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft),var(--shadow)}
+.card.is-hidden{display:none}
+.card-head{display:flex;align-items:center;gap:14px;padding:18px 22px;background:linear-gradient(135deg,hsla(var(--hue,220),70%,50%,.12),transparent 65%);border-bottom:1px solid var(--border-soft);cursor:pointer;user-select:none}
+.card.collapsed .card-head{border-bottom-color:transparent}
+.avatar{width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,hsl(var(--hue,220),70%,54%),hsl(calc(var(--hue,220) + 28),70%,44%));color:#fff;font-weight:800;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;letter-spacing:.02em;box-shadow:0 4px 12px hsla(var(--hue,220),70%,40%,.35)}
+.identity{flex:1;min-width:0}
+.index-tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-dim);margin-bottom:2px}
+.card-title{margin:0;font-size:1.24rem;font-weight:800;letter-spacing:-.02em;line-height:1.3;display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+.handle-pill{font-size:.83rem;font-weight:600;color:var(--text-muted);background:var(--bg);border:1px solid var(--border);padding:2px 10px;border-radius:999px;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.collapse-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:var(--bg);color:var(--text-muted);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .2s ease,color .15s ease,border-color .15s ease}
+.collapse-btn:hover{color:var(--text);border-color:var(--accent)}
+.card.collapsed .collapse-btn svg{transform:rotate(-90deg)}
+.card-body{padding:22px;display:flex;flex-direction:column;gap:16px}
+.card.collapsed .card-body{display:none}
+.sec{border-radius:12px;padding:15px 17px}
+.sec::before{display:block;font-size:.81rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.sec p{margin:0;font-size:.955rem;color:var(--text)}
+.sec p+p{margin-top:10px}
+.sec.verdict{background:var(--verdict-bg);border-left:4px solid var(--verdict-border)}
+.sec.verdict::before{content:"The Brutal Verdict (TL;DR):";color:var(--verdict-border)}
+.sec.core,.sec.social{background:var(--bg);border:1px solid var(--border-soft);border-left:4px solid var(--core-accent)}
+.sec.core::before{content:"Core Personality & Moral Compass (The 90%):";color:var(--core-accent)}
+.sec.social{border-left-color:var(--social-accent)}
+.sec.social::before{content:"Social Style & Group Role (The 10%):";color:var(--social-accent)}
+.sec.receipts{background:var(--receipts-bg);border:1px solid rgba(251,191,36,.22);border-left:4px solid var(--receipts-border)}
+.sec.receipts::before{content:"All Receipts & Behavioral Evidence:";color:var(--receipts-border)}
+.receipt-list{margin:8px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+.receipt-list li{padding:11px 13px;border-radius:10px;background:var(--card);border:1px solid var(--border-soft);font-size:.935rem;color:var(--text)}
+.receipt-list code{display:block;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:.855rem;color:var(--quote-text);background:var(--quote-bg);padding:6px 9px;border-radius:6px;margin-bottom:7px;white-space:pre-wrap;word-break:break-word;line-height:1.5}
+.ts{font-weight:700;color:var(--ts-color);margin-right:4px}
+.receipt-list li p{margin:0;color:var(--text);font-size:.935rem;line-height:1.58}
+.sec.flags{background:var(--flags-bg);border:1px solid rgba(251,113,133,.24);border-left:4px solid var(--flags-border)}
+.sec.flags::before{content:"Red Flags & Blind Spots:";color:var(--flags-border)}
+.flags-list{margin:6px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:7px}
+.flags-list li{font-size:.945rem;color:var(--text)}
+.empty-state{display:none;text-align:center;padding:48px 24px;border:1px dashed var(--border);border-radius:var(--radius);color:var(--text-muted)}
+.empty-state.visible{display:block}
+.back-top{position:fixed;right:24px;bottom:24px;width:44px;height:44px;border-radius:12px;border:1px solid var(--border);background:var(--bg-elevated);color:var(--text);box-shadow:var(--shadow);cursor:pointer;display:none;align-items:center;justify-content:center;font-size:1.1rem;z-index:120}
+.back-top.visible{display:inline-flex}
+.back-top:hover{border-color:var(--accent);color:var(--accent)}
+@media (max-width:960px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.mobile-bar{display:flex}.main{margin-left:0;padding:22px 14px 80px}.card{scroll-margin-top:72px}.card-head{padding:15px 16px}.card-body{padding:16px}}
+@media print{.sidebar,.mobile-bar,.progress-track,.back-top,.collapse-btn{display:none!important}body{background:#fff;color:#111}.main{margin-left:0;padding:0}.card{box-shadow:none;break-inside:avoid;border:1px solid #ccc;margin-bottom:18px}.card.collapsed .card-body{display:flex!important}}
+</style>
+</head>
+<body>
+<div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+<div class="backdrop" id="backdrop"></div>
+<div class="layout">
+<aside class="sidebar" id="sidebar" aria-label="Profile directory">
+<div class="sidebar-header">
+<div class="brand"><h2 class="brand-title">Master Dossiers v2</h2><span class="brand-count" id="sidebarCount">23 Total</span></div>
+<div class="search-box"><span class="search-icon">⌕</span><input type="search" id="searchInput" class="search-input" placeholder="Search username, alias, quote..." aria-label="Search profiles" /><button type="button" id="clearSearch" class="clear-search" title="Clear search">✕</button></div>
+<div class="sidebar-controls"><button type="button" class="ctrl-btn" id="expandAllBtn">Expand All</button><button type="button" class="ctrl-btn" id="collapseAllBtn">Collapse All</button><button type="button" class="ctrl-btn" id="themeBtn" title="Toggle light/dark theme">☀ / ☾</button></div>
+</div>
+<ul class="nav-list" id="navList"></ul>
+</aside>
+<div class="main-wrap">
+<header class="mobile-bar"><button type="button" class="menu-btn" id="menuBtn">☰ Profiles (23)</button><div style="display:flex;gap:8px;align-items:center"><button type="button" class="ctrl-btn" id="mobileThemeBtn">☀ / ☾</button></div></header>
+<main class="main"><div class="container">
+<div class="page-intro"><h1>Master Behavioral &amp; Psychological Dossiers (v2)</h1><div class="match-status" id="matchStatus">Showing all 23 profiles</div></div>
+<div class="empty-state" id="emptyState">No profiles matched your search. Try another keyword or clear the filter.</div>
+<div class="cards-stack" id="cardsStack">
+
+<article class="card" id="profile-01" data-av="IM" data-aka="Imran / @Imran" style="--hue:228"><h2>imranion</h2><div class="card-body">
+<section class="sec verdict"><p>Imran is Coconut Rice's central social engineer, resident prankster, and self-appointed QOTD interrogator who endlessly probes everyone else's romantic trauma while having never survived a real relationship himself. His "easygoing" chill-guy host routine is half genuine hospitality and half a bid for payback, turning feelings into transactional logistics and snapping into petty, condescending hostility the moment someone refuses to validate or reply to him.</p></section>
+<section class="sec core"><p>Imran's entire identity hinges on being central, needed, liked, and emotionally consulted. He fires off intimate questions about breakups, self-love, attachment styles, and betrayal, positioning himself as the server's calm, analytical sage ("we are the product of our environment")—even writing attachment-theory essays that read straight out of a pop-psychology thread. Yet beneath the polished host persona, he admits he has no real career direction ("i dont have a big life career dream"), went against his mother's word, lacks emotional intuition ("i think too logically when it comes to dealing with people"), and has zero actual romantic mileage. When QOTDs force a hard moral trade-off, he hunts for rationalizing loopholes—claiming he wouldn't sacrifice his dearest person to save billions purely on systems-failure logic ("cuz billions die i might die too") instead of a moral value.</p><p>His self-diagnosis is accurate on the surface yet self-flattering: he spots that he leads with logic and drops his guard to be liked, presenting both as strengths while rationalizing people-pleasing as hospitality. He claims low ego, yet obsessively chases perfectionism, discipline, and "mutuality" because he is terrified of feeling overlooked or treated as dispensable. His morals are conventional and loyal on the surface, but strictly conditional with almost zero tolerance for anyone who withholds from him—friendship has to pay him back in attention.</p></section>
+<section class="sec social"><p>He acts as the group's connective tissue—and Dax says so outright—cheering on Anjana's ranked Overwatch tilt, mediating chaos, hijacking the QOTD thread with his own prompts, and soaking up praise for being "the easiest person to talk to." Humor is his default exit ramp whenever conversations get uncomfortably real on his side of the glass, after which he turns around and complains that nobody is deep with him. Beneath the "sweet gremlin" warmth, his ego bruises fast: when left on read, teased about his height ("4'9 dwarf"), or ignored by Sajani or Anjana, he immediately ditches the chill-guy act, demands a public audience for his grievance, and turns razor-sharp and sarcastic.</p></section>
+<section class="sec receipts"><ul class="receipt-list">
+<li><code>[7/21 11:31 PM] "i lost my dignity." / "proper one i never had one"</code><p>Dropped straight after he pressed the server on post-breakup perceptions (7/18). When Azrael called out that he never had a proper relationship, he agreed—using self-deprecating comedy to cover the glaring gap between his constant relationship theorizing and zero real-world experience.</p></li>
+<li><code>[7/30 9:16 PM] "ppl say i have low self respect, and i feel like thats cuz i like kinda drop my guard around some ppl to make them feel comfortable around me."</code><p>Textbook people-pleaser rationalization: he absorbs disrespect and demeaning jokes under the banner of "making others comfortable," then quietly builds resentment when people don't value or reciprocate his sacrifices.</p></li>
+<li><code>"i think too logically when it comes to dealing with people." / "i like mutuality alot, hate feeling one sided."</code><p>Frames emotional disconnection as a humblebrag about superior "logic" while admitting that every connection is tracked on an internal balance sheet that must pay him back.</p></li>
+<li><code>"i dont have a big life career dream" / "we are the product of our environment"</code><p>Low-ego branding and pop-psych sagehood coming from someone who quietly craves being the indispensable center of the room.</p></li>
+<li><code>"If i were to ask, do you love me rn ⏎ i wonder what ur answer might be?"</code><p>Blatant validation-fishing disguised as a playful hypothetical prompt, posted directly to extract open reassurance from the chat.</p></li>
+<li><code>[8/23 6:01 PM] "lowkey like few days ago i did for like a day or so, absolutely despised you, till you explained the whole situation"</code><p>Admits harboring sudden, intense silent contempt toward a 7-year friend based solely on uncommunicated assumptions—proving how thin his "laid-back" patience actually is.</p></li>
+<li><code>[8/1 7:14–7:19 PM] "you need to stop pretending to be tough ... its okay to be vulnerable sometimes." / "you had to actively open the chat and type that statement out, just to pretend that your not shy"</code><p>Weaponizes therapy language in petty public retaliation because Anjana left him on read—lecturing about "vulnerability" while refusing to consider that someone simply didn't want to talk to him.</p></li>
+<li><code>Yuneth's "what did I ever do to u" callout</code><p>Widely read by the group as aimed straight at Imran—providing outside evidence of how his "pranks for my own laughter" land as targeted meanness.</p></li>
+</ul></section>
+<section class="sec flags"><ul class="flags-list">
+<li><strong>Asymmetrical Extraction:</strong> Harvests everyone else's deepest insecurities, heartbreak, and secrets while offering mostly polished pop-psychology abstractions about his own life.</li>
+<li><strong>Cruel "Pranks" &amp; Tone-Deafness:</strong> Completely blind to how his "pranks for my own laughter" read as plain bullying (such as Yuneth's pointed callout).</li>
+<li><strong>Covert Scorekeeping &amp; Deflection:</strong> Keeps score while claiming not to, deflects real depth with jokes, and then complains nobody goes deep with him.</li>
+<li><strong>Tolerate-Then-Snap Cycle:</strong> Absorbing slights until snapping into silent contempt or moral lecturing makes the "nice, logical guy" image feel calculated rather than secure.</li>
+<li><strong>Boundary Blindness &amp; Weaponized Therapy-Speak:</strong> Psychoanalyzes opponents to win arguments and fails to see that silence from someone like Anjana may simply be a boundary; logic-first habits leave him emotionally unintuitive.</li>
+</ul></section>
+</div></article>
+
+<article class="card" id="profile-02" data-av="NI" data-aka="Nicole / @A wild Nicole / &quot;sushi&quot;" style="--hue:278"><h2>whatevaloosa29</h2><div class="card-body">
+<section class="sec verdict"><p>Nicole is the server's hyperactive court jester and deadpan queen who floods chat with absurdity, poop jokes, and aggressive banter specifically so nobody gets close enough to judge or hurt her. Beneath the loud "unbothered baddie" dominance act sits a deeply conflict-avoidant introvert paralyzed by the terror of public backlash—who saves her actual bite for weaker targets who can't hit back and secretly enjoys being tiptoed around.</p></section>
+<section class="sec core"><p>Nicole's entire psychology is pure defensive deflection. Having survived a miserable COVID school transfer as "a full on introvert" stuck around "icky" classmates until they left, she learned to survive socially by dominating the room with noise while revealing zero inner truth. Whenever QOTDs touch genuine vulnerability—grief, relationships, regrets, or mind-reading—she flatly refuses to play, derails the thread with food memes and trivia, claims she lost "nothing" in her last relationship, or hides behind apathy ("just accept fate").</p><p>Both sides of her self-image are true: she performs dominance while being deathly afraid of receiving backlash ("will breakdown"), openly admits she cannot show sympathy even when she feels it, never confronts problems directly, and treats mind-reading as her worst nightmare because keeping her inner self locked away is her sole safety mechanism. Simultaneously, she reports "Bullying ppl Irl" as the highlight of her day and operates a strict social hierarchy—deciding who is "family," who is "fake," mothering a chosen few with concrete loyalty, and policing what the channel is allowed to be. Her confrontation habit is telling: straight with people who can't retaliate, scared of everyone else.</p></section>
+<section class="sec social"><p>She dominates message volume (Level 55) through machine-gun single-line bursts, GIF floods, and chaotic teasing—calling herself "a sushi," bragging about bullying people IRL, and joking about secret group chats to trash-talk friends. Her jokes at others' expense occasionally stumble into tenderness she didn't intend. She polices tone relentlessly (shutting down Nate's sincere quote so hard he had to ask beforehand if "nicole will get mad") so everyone stays slightly on guard around her. Genuine honesty goes almost exclusively to her longtime anchor Thinal (`seasalt`), while she admits the rest of the server genuinely intimidates her.</p></section>
+<section class="sec receipts"><ul class="receipt-list">
+<li><code>[7/31 8:54–8:55 PM] "When it comes to giving my opinion on something and speaking up , i tend to not speak bcoz i am scared of judgement" / "Idc if ppl judge But backlash I will breakdown"</code><p>Completely shatters her loud, fearless persona: her nonstop sarcasm and shitposting exist purely so she never puts an authentic stance on the table that people could attack.</p></li>
+<li><code>[9/15 12:10–12:13 AM] "im not the type to confront ppl if i hve a problem, i just live with it" / "i usually dont tell | unless its seasalt ... if i hve a prb with imran i tell it straight | to his face | cuz ik he cant do anything abt | im scared of the rest of yall tho."</code><p>The clearest receipt in her log: her bluntness isn't courage—it's selective punching down. She freezes around people who scare her and only talks tough to targets she knows are harmless.</p></li>
+<li><code>[8/10 8:26 AM &amp; 10/24 1:51–1:52 PM] "Sympathy | I feel it ⏎ But i SUCK at expressing it" / "lack of SHOWING sympathy eventhough i feel it" / "Read minds" / "Aint no one reading my mind" / "Scares me"</code><p>Exposes severe emotional guarding and paralysis: her warmth is locked behind irony while she silently swallows resentment rather than risking an adult conversation.</p></li>
+<li><code>[8/23 4:11 PM] "I have many grps without u To shit tlk u" (followed by "Access denied" over Sajani's "my ex did that")</code><p>Even when Sajani openly signaled real trauma over secret trash-talk groups, Nicole kept doubling down on the exclusion bit—proving how easily her humor turns callous and tone-deaf.</p></li>
+<li><code>"Bullying ppl" "Irl" 🙏 / "Dont give life advice here | We thrive to be depressed and lifeless | Loosers." / "i lost | nothing."</code><p>Gatekeeps sincerity out of the channel, mocks earnest newcomers like Nate, and shuts down relationship introspection with armored one-word dismissals.</p></li>
+<li><code>"Im gonna always speak for u | Dw | I gotchu."</code><p>Delivered straight after Dax named "someone else tries to speak for me" as his biggest pet peeve—either complete obliviousness to friends' boundaries or deliberate trolling at his expense.</p></li>
+</ul></section>
+<section class="sec flags"><ul class="flags-list">
+<li><strong>Cowardly Dominance:</strong> Mistakes power over safe targets (Imran, Nate) for honesty while avoiding real confrontation with anyone who could match her energy.</li>
+<li><strong>Hypocritical Fragility &amp; Gatekeeping:</strong> Terrified of receiving backlash herself while dishing it out; declines every vulnerable opening and punishes sincerity.</li>
+<li><strong>Enjoys Being Tiptoed Around:</strong> Quietly relishes keeping the room slightly afraid of setting her off.</li>
+<li><strong>Tone-Deaf Cruelty &amp; Silent Freezing Out:</strong> Refuses to stop mean-girl bits when someone is actually hurting, while swallowing real grievances until friends get frozen out without explanation.</li>
+<li><strong>Emotional Unavailability:</strong> Compulsive clowning makes real reciprocity nearly impossible for anyone outside her tiny private vault (`seasalt`).</li>
+</ul></section>
+</div></article>
+
+<article class="card" id="profile-03" data-av="AZ" data-aka="Azrael / Anargika / Ananas / @Azrael" style="--hue:330"><h2>azraelquinn</h2><div class="card-body">
+<section class="sec verdict"><p>Azrael is a burnt-out, hyper-defensive martyr who acts as the server's QOTD driver and emotional-intelligence spokesperson while treating real relationships as temporary emotional pit stops. She writes polished, AI-assisted sermons on communication, empathy, and transparency, yet openly admits she uses people for short-term comfort and ghosts them once she stabilizes, goes silent during conflict, and flips from sage counselor to thin-skinned belligerent whenever cornered.</p></section>
+<section class="sec core"><p>Beneath the "relatable goth/alt older sister" image sit two real forces feeding each other: genuine immigrant-student exhaustion and weaponized victimhood. Working two jobs, attending university, paying half the bills, fighting for PR in Canada, and absorbing family accusations that she is selfish has left her starved to be "solved like a puzzle" and willing to trust "my chat gpt" to tell her who she is. Yet her morality bends entirely around her mood: she claims she lost faith in everything, says the "world would be a better place without people," recycles her martyr mantra ("Sometimes u gotta be a disappointment in everyons else's plan jus for yourself"), and carries irrational survivor guilt over a deceased sister she wasn't even born to replace.</p><p>She demands infinite grace for her baggage and judges others as immature when they hesitate to meet her on her chaotic emotional terrain—yet her hypocrisy runs deep. She constantly obsesses over connection ("In my free time, i think alot abt friendships lol") and calls non-confrontational people "immature," then confesses handling conflict by going silent ("i just dont speak to them for awhile") and dropping people used for "brief joy" once she feels stable. She flips from unprompted self-indictment ("I think its my fault before i think its their fault"; assuming an ex viewed her as "precious" yet "too much baggage" and that she was wrong even without knowing why) to cold dismissal (if she blames them, "that means i jus dont care abt em"). Her self-love essay even shifts register midway with raw markdown syntax (`# self-love...`), blurring where her real voice ends and AI polish begins.</p></section>
+<section class="sec social"><p>She is the server's relentless QOTD instigator, organizer, "everyone needs an imran" cheerleader, and pseudo-therapist—constantly fishing for trauma confessions while shielding herself with violent hyperbole ("Acts of violence," "pure hate towards u"), boundary-free toddler jokes, and frequent "kms" jokes specifically to test how much people will tolerate. She drops maximum-shock phrasing before adding context just to pull horrified attention into chat, airs private romantic subtext publicly with Aalam, and brags about being a "nerd" smarter than her AIBS peers—only for Shalu to expose she attended at most 13 classes all year.</p></section>
+<section class="sec receipts"><ul class="receipt-list">
+<li><code>[8/21 2:40 AM] "Sometimes there were ppl i associated with jus for a brief joy, n then when im bck stable, i leave em. Honestly, by now, ive noticed it and lwk tryna change that."</code><p>Demolishes her loyalty sermons: despite endlessly theorizing about friendships, people function as disposable emotional crutches the moment her personal crisis passes.</p></li>
+<li><code>[7/19 2:25 AM] "Their pov of me probably was - precious, too much baggage/not worth the risk or wait, not enough, avoidant attachment typa person" / "might've been in the wrong, even if i didn't know why" / "Lwk me jus having faith in anything. I lost that."</code><p>Even when examining a breakup, she leads with "precious," aestheticizes abandonment as romantic tragedy, and hands out unprompted self-indictment rather than clean accountability.</p></li>
+<li><code>"Ppl who don't have the guts to speak abt smth which bothers them, i see em as immature." vs "i just dont speak to them for awhile"</code><p>Direct behavioral hypocrisy: diagnoses avoidance as childish immaturity in others while practicing silent withdrawal whenever conflict gets uncomfortable for her.</p></li>
+<li><code>"# self-love affects friendships &amp; relationships because it changes how you show up inside them" / "my chat gpt" / "In my free time, i think alot abt friendships lol"</code><p>Persona line paired with a mid-essay AI markdown heading—alongside using ChatGPT for prompts and trusting it to define who she is—leaving the boundary between lived wisdom and outsourced polish blurry.</p></li>
+<li><code>[8/13 12:29–12:41 AM] "I regret taking my sister’s life" / "sometimes when my sis gets mad she blame me for taking my dead sis’s life. Technically i wasn’t even born then"</code><p>Real family scapegoating trauma delivered in shock-first phrasing purely to pull horrified attention before adding context.</p></li>
+<li><code>[8/23 10:28 PM &amp; 9/8 4:41 AM] "Aye if they look adorable n obedient" / "I cant promise" / "@Felix _11 this question was u to me 😠" / "Cuz i wanna kms n wanna kill the rest of yall too"</code><p>Doubled-down creepy toddler joke, passive-aggressive public entitlement with Aalam, and recurring "kms" jokes frequent enough to signal real distress buried under dark humor.</p></li>
+<li><code>"Lwk idm giving all my lifespan ⏎ I just said all of it breh, selfish reasons." / "being too self aware gets u to a point where u dont fit in anywhere"</code><p>Preemptively brands her sacrifice "selfish" before anyone can credit it, hiding inside hyper-analysis to justify feeling alienated.</p></li>
+<li><code>Shalu's receipts: "I think u came max 13 times in our 1 year program" / "yeah real smart leasing a Apple phone" / "yeah real smart spending 50 dollers on kottu"</code><p>External receipts puncturing her academic "nerd" pride and financial posturing in real time.</p></li>
+</ul></section>
+<section class="sec flags"><ul class="flags-list">
+<li><strong>Temporary Emotional Landfill Cycle:</strong> Confuses oversharing and emotional intensity with intimacy; idolizes people while hurting, nitpicks or ghosts them once stabilized, and calls it "avoidant baggage."</li>
+<li><strong>Do-As-I-Say Hypocrisy:</strong> Lectures peers on brave communication and academic superiority while going silent in conflict, treating AI-polished wisdom as her own voice, and skipping AIBS classes.</li>
+<li><strong>Shock-First Escalation &amp; Masked Distress:</strong> Creepy toddler jokes and frequent "kms" quips bury what may be genuine pain—someone should ask her straight, once, whether they're all jokes.</li>
+<li><strong>Analysis as Shield &amp; Thin Skin:</strong> Uses "too self-aware" as an excuse against changing, and flips belligerent the second her contradictions are named.</li>
+</ul></section>
+</div></article>
+
+<article class="card" id="profile-04" data-av="SA" data-aka="Sajani / @𝖑𝖔𝖓𝖊𝖌𝖔𝖙𝖇𝖆𝖓𝖉𝖘" style="--hue:16"><h2>lonegotbands</h2><div class="card-body">
+<section class="sec verdict"><p>Sajani is a loud, bossy, big-hearted caretaker whose love and generosity always come with an invoice attached. Trapped by severe FOMO and abandonment anxiety in Australia, she wants to be the beloved matriarch holding the group together—yet sabotages herself through jealousy, territorial control, and compulsive hyper-sexualized shock-flirting where self-awareness serves as a pre-emptive excuse rather than restraint.</p></section>
+<section class="sec core"><p>Living away from Sri Lanka, her family, and her late dog, Sajani tries to buy and organize belonging—spending 11k and gifting Codenames to leave a physical anchor behind. She is unusually transparent and honest to a fault about her flaws: openly admitting she gets jealous fast, shuts down over minor FOMO, lashed out when friends she introduced hung out without her, and spirals over exes ("what does she have that i don't"). She claims she naturally leads because she can "clutch up" when things go wrong while admitting others see it as bossy—and confesses hating being told she is wrong, especially if berated.</p><p>Beneath that self-awareness sits glaring moral hypocrisy and transactional accounting. She preaches uncompromising "girl code" ("against my morals as a person" to date a friend's ex), yet confesses she previously pursued someone a friend liked and still feels "real shit" about it. She wants to be the safe person while keeping a literal ledger ("where are the fruits of my labour?"), and handles exes with smiley-masked blame-shifting ("i do think i had my faults, but they were the wrong one ☺️").</p></section>
+<section class="sec social"><p>Second only to Imran in sheer noise, she stays at the center of gravity through chaotic, raunchy shock-flirting—repeatedly propositioning Imran, flirting with Himash and Nicole, joking about fake divorces and voyeurism, and handing out extreme family labels (mother, wife, baby). She is fiercely loyal to a handful of people and vocal about the rest, yet when Imran or Himash push back or accuse her of crossing lines (like the "Moon" drama), the bravado collapses straight into hurt bewilderment and open reassurance-fishing (`@everyone do you hate me?`).</p></section>
+<section class="sec receipts"><ul class="receipt-list">
+<li><code>[8/21 6:40–6:41 AM] "even the slightest fomo can make me shut down... i even lashed out in times i should’ve just been happy the friends i introduced to one another hung out without me"</code><p>Confesses territorial ownership over friendships: acts as the social connector, then treats peers' independent bonds as a personal threat.</p></li>
+<li><code>"where are the fruits of my labour?" / "i just feel a little left out most the time but i don't blame you. ... i love nothing more than standing from the sidelines and watching you be happy."</code><p>Exposes care as an investment expecting ROI (so blunt Azrael called it "crazy lmao"), followed by textbook passive-aggressive martyrdom wrapped in a polite bow.</p></li>
+<li><code>[7/30 2:01 PM] "i like to naturally lead groups, i just think i work best when i’m the leader... even if something goes wrong, i can clutch up... people take that as me tryna be bossy" / "i'm a person that doesn't like being told what i'm doing is wrong, especially if someone berates me about it."</code><p>Perfectionist control disguised as competence alongside thin-skinned defensiveness whenever anyone challenges her leadership.</p></li>
+<li><code>[9/11 1:03 AM] "i wouldn’t like it if my friend went for someone i said i previously had a thing for, i’ve done this to someone before and i feel real shit about it."</code><p>Rare unfiltered guilt confirming her impulsive validation-hunting has already caused real collateral damage—undermining her strict moral posturing.</p></li>
+<li><code>[9/11 1:33 AM &amp; 9/26 7:28 PM] "imran can i satisfy my sexual desires using you" / "boy imran no like me. i sad. i cry. i heartbreak. i die."</code><p>Relentless sexual provocation toward male friends (which she'd instantly condemn if the genders were reversed) masking genuine hurt and desperate hunger for Imran's validation.</p></li>
+<li><code>"it's the same person, and i do think i had my faults, but they were the wrong one ☺️."</code><p>Token gesture at self-reflection immediately canceled out by a passive-aggressive smiley and full blame-dumping onto her ex.</p></li>
+</ul></section>
+<section class="sec flags"><ul class="flags-list">
+<li><strong>Weaponized Self-Awareness:</strong> Uses "I know I'm jealous and bossy" as a pre-cleared excuse to keep lashing out and micromanaging rather than curbing the behavior.</li>
+<li><strong>Transactional Generosity &amp; Ownership:</strong> Keeps a ledger on her gifts and introductions ("fruits of my labour"); treats closeness as ownership and hits friends with jealousy before addressing the real target.</li>
+<li><strong>Past Friend-Code Breach:</strong> Carries real guilt from having previously pursued someone a friend liked—despite preaching strict loyalty rules.</li>
+<li><strong>Double Standards &amp; Feedback Allergy:</strong> Spams explicit sexual jokes at specific male friends while bristling sharply at criticism or boundaries.</li>
+</ul></section>
+</div></article>
+
+<article class="card" id="profile-05" data-av="DX" data-aka="Dax / @Daxolotl" style="--hue:196"><h2>daxilic</h2><div class="card-body">
+<section class="sec verdict"><p>Dax is a textbook "nice guy" intellectualizer and the best writer in the group—drafting sweeping essays about relationships and communication despite having almost zero real romantic mileage. He prides himself on maturity and approachability while hiding rigid control habits, IRL social paralysis, chronic over-accommodation, and troublingly lax views on adult-minor age gaps—absorbing the sting of giving more than he gets behind patient pseudo-Buddhist acceptance.</p></section>
+<section class="sec core"><p>Having pulled himself out of an OL-era depressive trough and salvaged college by switching universities, Dax wears personal growth like a badge of honor and preaches deterministic optimism ("butterfly effect"). His long answers hold the sharpest moral reasoning in the log: championing communication ("You should be willing to always say something. Anything."), warning against making one person your sole source of joy ("two independent puzzle pieces"), and writing crisp aphorisms ("Love without understanding is infatuation and basically the plot of obsession"). His grief over his cousin is genuinely raw and unguarded.</p><p>Yet his morality turns rigid, pedantic, and controlling in practice: policing QOTD rules ("Guys read the whole question"), panicking when anyone alters his "mental map" of belongings, bristling if spoken over or patronized, and moralizing harshly at people who struggle ("if you're afraid of bringing it up at all, you're only hurting that friendship"). His core flaw—named by himself—is self-erasure: prioritizing people who don't prioritize him. Most jarring is his ethical blind spot on age gaps, excusing 20-with-17 and 19-with-16 dynamics.</p></section>
+<section class="sec social"><p>Online, he is a hyper-verbal golden retriever (Level 49 Arcane)—writing five-paragraph essays, spamming emotes, insisting he's "very approachable," and acting as the group's wit and voice actor whom peers want to "peep into" for creativity, taking Nicole's nonstop teasing gracefully. Offline, he freezes in corners unless approached first ("my people skills are pretty ass"), masking loneliness and short-height teasing behind thirsty self-deprecation ("We'd bang ong," "Nobody wants me 😔") and hedging even sincere compliments so he never stands exposed alone.</p></section>
+<section class="sec receipts"><ul class="receipt-list">
+<li><code>[8/10 12:34 AM] "Prioritising people who don't prioritise me"</code><p>Admits flat out that his celebrated kindness is often weak boundary enforcement disguised as loyalty—and keeps doing it anyway.</p></li>
+<li><code>[9/11 1:08 AM] "My philosophy has always been I'd wanna be friends with an ex, but the one relationship I had my ex basically cut me off."</code><p>Exposes the gap between his seasoned sage theorizing and reality: lecturing peers on breakups based on a single relationship where he was cleanly shut out.</p></li>
+<li><code>[8/9 7:27–7:28 PM] "I have a mental map of all my things and if someone else takes something its all destroyed" / "When people take my things without asking, it spikes my anxiety because I tend to lose track of things a lot so I always double triple check." / "I should probably get tested for autism"</code><p>Reveals high baseline sensory/environmental anxiety and controlling rigidity hidden behind cheerful Discord banter.</p></li>
+<li><code>"I think its only a concern if youre a minor, even then there are certain exceptions like 20 - 17 is okay imo and 19 - 16 can still work" (adding 18-15 is "iffy")</code><p>His most uncomfortable line—drawing surprisingly loose boundaries that effectively excuse adults pursuing minors, clashing sharply with his strict rule-following moralism elsewhere.</p></li>
+<li><code>[7/31 10:10 PM &amp; 9/11 1:42 AM] "Real life is so awkward for me i just stand in a corner" / "my people skills are pretty ass" vs "Im very approachable" / "Nobody wants me 😔 / Somebody want me please" / "We'd bang ong"</code><p>Strips away the confident Discord persona, exposing real social paralysis IRL alongside thirsty self-deprecation and aching desperation to be chosen.</p></li>
+<li><code>"I wish we met earlier in life ... Altho this applies to a lotta people." / "if you're afraid of bringing it up at all, you're only hurting that friendship."</code><p>Hedges even sincere moments while dropping harsh over-moralizing verdicts on peers who struggle with conflict.</p></li>
+</ul></section>
+<section class="sec flags"><ul class="flags-list">
+<li><strong>Over-Theorizing &amp; Compulsive Over-Explaining:</strong> Lectures friends with unlived ideals rather than sitting in messy emotions; playing therapist instead of expressing raw anger can feel suffocating and patronizing in relationships.</li>
+<li><strong>Doormat-Martyr Cycle:</strong> Demands reciprocity in theory while continually over-giving without it, bottling resentment under patient acceptance.</li>
+<li><strong>Approachability Illusion &amp; Control Anxiety:</strong> "Very approachable" applies online while costing him IRL behind hidden social anxiety and rigid "mental map" panic.</li>
+<li><strong>Loose Age-Gap Rationalizations:</strong> Excusing 20-17 and 19-16 relationships is a serious ethical blind spot needing a hard second look.</li>
+</ul></section>
+</div></article>
+
+<article class="card" id="profile-06" data-av="HI" data-aka="Himash / @Himash" style="--hue:210"><h2>babycapybaraindahood</h2><div class="card-body">
+<section class="sec verdict"><p>Himash is a stark split between a lonely, emotionally astute young man studying in Finland and an uninhibited 13-year-old shock-troll with cruel, vulgar humor. He has engineered cold emotional distance into a personality—erasing exes cleanly and calling it maturity, preaching "emotional intelligence" and self-reliance while hurling childish abuse at Sajani and operating with zero braking system on dark humor.</p></section>
+<section class="sec core"><p>Living abroad in Finland while dreaming of becoming a pilot, Himash carries real scars from isolation, teenage emptiness ("when i was 16, i would talk to him abt the empty feeling"), remembering someone he lost ("remembering him is the best thing u can do"), and a sole breakup where his ex ended up hating him ("i did mistakes but the final decision was not my fault"). Those scars produced an impressively lucid view of self-love and independence—seeing how loneliness can become peaceful—yet also hardened into cold self-protection: exes are instantly deleted regardless of how the breakup went, and people are sorted by utility ("if i see you as a time waste").</p><p>He knows his "do my own thing" wall alienates everyone ("comes off as rude," "makes it harder for people to be comfortable w me," "i struggle with handling other people's emotions"), yet shrugs ("but i kinda like it") and complains nobody opens up to him. Underneath sit chronic procrastination and low confidence—none of which stop him from despising people "with no emotional intelligence."</p></section>
+<section class="sec social"><p>He swings unpredictably between the quiet, comforting older-brother voice (offering real solace to Anjana over Daniru) and the loudest edgelord in the room—obsessively antagonizing Sajani ("attract all my hatress," "chubby creature"), bragging about handling "older women," cutting down Imran ("ransana's friend") when Imran relaxes, and tossing ambiguous digs disguised as praise (telling Marien he's "proud of yr english development"). Despite dishing constant abuse, he gets thin-skinned fast the moment pressure hits back ("im sorry for exisiting," "im stressed ok | stop").</p></section>
+<section class="sec receipts"><ul class="receipt-list">
+<li><code>[7/30 2:44 PM] "I naturally adpated to a mode where i do my own thing and the other person does his/her own thing. it comes off as rude to a lot of people... but i kinda like it... makes it harder for people to be comfortable w me... i wonder why ppl dont open up to me"</code><p>Sharp self-awareness of his avoidant defense mechanism—admitting he enjoys the rudeness while simultaneously feeling lonely inside the wall he built.</p></li>
+<li><code>"once you become an ex for me you are automatically not a friend in my eyes. U are gone i don't really care if we broke up well or bad" / [7/19 6:18 AM] "the one and only one i had, meant the most in her pov she hates me" / "i do know i did mistakes but the final decision was not my fault"</code><p>Total erasure of past intimacy paired with defensive blame-dodging that absolves himself of final responsibility.</p></li>
+<li><code>[8/23 8:04 PM &amp; 9/11 1:19–1:25 AM] "i think she has a superpower to be able to attract all my hatress" / "straight child porn" / "i will shit my pants and throw it at my crush"</code><p>Targeted cruelty toward Sajani alongside morbid kid humor and child-porn shock jokes completely out of line even in this server.</p></li>
+<li><code>[8/21 10:13 PM] "people with no emotional intelligence" / "i struggle with handling other people's emotions." / "i might not end up saying them if i see you as a time waste"</code><p>Demands elite emotional intelligence from others while admitting he can't handle others' emotions, filtering people by utility, and acting like a crass middle-schooler.</p></li>
+<li><code>[7/17 12:24 AM] "when i was 16, i would talk to him abt the empty feeling and he made the right choice" / "im proud of yr english development"</code><p>Genuine adolescent depression sitting right next to condescending ambiguity—leaving Marien legitimately asking "You rlly compliment me or mock me."</p></li>
+</ul></section>
+<section class="sec flags"><ul class="flags-list">
+<li><strong>Avoidance Sold as Maturity:</strong> Believes emotional cutoff and self-sufficiency are maturity when it's largely fear of dependence and accountability.</li>
+<li><strong>Zero-Brake Dark Humor:</strong> Dropping child-porn jokes, morbid kid humor, and scat crushes as a substitute for intimacy betrays deep immaturity.</li>
+<li><strong>Targeted Bullying &amp; Thin Skin:</strong> Dishes cruel weight/appearance jabs at Sajani and backhanded digs at Marien, yet crumbles immediately ("im stressed ok | stop") when pressed.</li>
+<li><strong>Blame-Shifting in Relationships:</strong> Shuts partners out behind cynical aloofness while insisting breakups aren't his fault, leaving them alienated and blamed.</li>
+</ul></section>
+</div></article>
+
+<article class="card" id="profile-07" data-av="SE" data-aka="Sese / @Seserafim" style="--hue:162"><h2>coorasae</h2><div class="card-body">
+<section class="sec verdict"><p>Sese is a hyper-ambitious workaholic who weaponizes productivity, cigarettes, and ruthless cutoffs to numb emotional vulnerability before it can touch her. Warm, sharp, and fiercely protective of the friends she loves, she calls avoidance "regulation," mistakes hustle for healing, and is openly sliding into admitted cynicism, burnout, and fast, final self-sabotage.</p></section>
+<section class="sec core"><p>Juggling PR/HR internships and legal ambitions on adrenaline, Coca-Cola, cigarettes, and repressed feelings, Sese uses work as a panic shelter—admitting both dumping work onto herself whenever she catches feelings and deliberately "sabotaging shit just so i can lock in." Scarred by an ex who treated her as "potential" and trophy validation—and haunted by guilt over avoiding her dying grandfather due to a Sinhala language barrier—she has swung hard toward cold self-preservation.</p><p>She prides herself on brutal honesty ("im someone who physically cannot lie"), despises "pick mes" and "self victimizers," insists she would change "genuinely nothing," and enforces ironclad girl code ("girl code cannot be that hard to follow"). Yet she admits she is "loosing my empathy," refuses to fix irritating relationships, treats blocking as a universal reflex for both attraction and contempt, and maintains an "I don't owe anyone my emotions" stance that makes real intimacy nearly impossible.</p></section>
+<section class="sec social"><p>She is the group's cool, intimidating "single mother / auntie"—doting affectionately on Lari, Marien, and Nicole ("HAI BABY," "twin," playful flirting with Marien) while snapping blunt verdicts ("kill you") and slicing straight through victim-mentality nonsense like Dilesh's "im too nice" humble-brag. Even with her intimidating cool, she stays wary of Sajani's blowback ("im gonnq get ass fucked for this by saj") and vanishes back to work once feelings get close.</p></section>
+<section class="sec receipts"><ul class="receipt-list">
+<li><code>[7/30 2:27 PM] "if i get like idk very in my head about a problem or catch myself getting feelings for someone i just panic and lock in and dump work on myself to avoid it??" / "sabotaging shit just so i can lock in"</code><p>Openly admits her famed work ethic doubles as a panic shelter built to starve off romantic vulnerability and messy emotion (notice the two question marks).</p></li>
+<li><code>[8/1 12:03 AM &amp; 9/15 12:16 AM] "i feel like im loosing my empathy" / "I couldn’t be less bothered to fix relationships that do nothing but pmo now."</code><p>Documents emotional fatigue hardening into callousness—rebranding burnout and zero patience as efficiency while watching her empathy drain away.</p></li>
+<li><code>[9/6 2:24 AM] "id block them, for both"</code><p>Her snap answer for both someone she likes and someone she despises—proving attraction and threat trigger the exact same shutdown reflex.</p></li>
+<li><code>[7/20 4:37 PM &amp; 9/11 1:13 AM] "ig he saw me as like proof he is capable of a relationship, smth to show off as a gf and just validation" / "he was w me for 'potential' so" / "Ill fuck myself w a cactus before i see any of my friends exes tht way"</code><p>Clinical breakdown of being used by an ex that turned her ruthlessly loyal to girl code yet deeply cynical about romantic motives, leaving zero room for gray.</p></li>
+<li><code>"Nothing id change genuinely nothing"</code><p>Sincere yet convenient optimism masking buried grief over her grandfather and emotional avoidance.</p></li>
+</ul></section>
+<section class="sec flags"><ul class="flags-list">
+<li><strong>Productive Repression:</strong> Calling workaholic panic-locking "regulation" guarantees burnout and emotional numbness.</li>
+<li><strong>Hair-Trigger Cutoffs &amp; Intimacy Allergy:</strong> Partners compete against her work shield and risk instant blocking the moment attachment feels risky; her "I don't owe anyone my emotions" posture kills closeness.</li>
+<li><strong>Moral Absolutism &amp; One-Way Dismissals:</strong> Leaves zero room for gray and readily dismisses people who have no way to answer back, letting honesty sharpen into cruelty.</li>
+<li><strong>Eroding Empathy:</strong> She knows she is losing empathy and actively leans into detachment rather than addressing the exhaustion underneath.</li>
+</ul></section>
+</div></article>
+
+<article class="card" id="profile-08" data-av="AN" data-aka="Anjana / @Remmyy" style="--hue:245"><h2>rempo_x</h2><div class="card-body">
+<section class="sec verdict"><p>Anjana is a fiercely guarded, stoic survivor carrying devastating grief who mistakes emotional blunting and hyper-independence for strength. The best listener in the group on paper and the least willing to be heard, he is capable of extraordinary loyalty to his inner circle—yet maintains a deeply hypocritical one-way vault, boasts without remorse about childhood animal cruelty, and prosecutes friends with icy silence whenever hurt.</p></section>
+<section class="sec core"><p>Two seismic wounds anchor Anjana: a rough childhood that still breaks his voice to mention, and the traumatic 2023 loss of his best friend Daniru—whose lifeless body he saw after teenage years studying and fixing tech together. His essay on Daniru shows genuine depth and loyalty, and reads as the one place he lets himself feel. Everywhere else, grief forged militant self-reliance: talking about problems "wastes time," he admits he can't feel emotions fully anymore, and he frames love as stark sacrifice ("half my lifespan"). His moral framework is fairness-based, pedantic ("rewind itself means ... you cant interact"), and legalistic ("wouldnt the mother sue u").</p><p>His shadow side is unsettling: he recounts trying to cook an "idling" pet fish alive before bagging and throwing it away still breathing—and "proudly" telling his uncle—alongside childhood arson and joking that a grieving mother can just "spawn more" kids. His empathy is strictly binary: fierce devotion to "his people," total indifference or vengeful spite ("if i cant have it, they cant either") toward everyone else—paired with an asymmetrical policy of begging others to confide while keeping himself sealed shut.</p></section>
+<section class="sec social"><p>He performs the stoic, philosophical "father figure" who directs stalled groups, trades deadpan banter, and tilts violently over Overwatch losing streaks. Asking the heaviest QOTDs in the channel (like asking everyone's secret fears on 8/21 while giving zero answer himself), he flips quickly under friction: when Imran called out being left on read, Anjana dismissed him with icy superiority before later dropping bitter anonymous callouts about feeling pushed away.</p></section>
+<section class="sec receipts"><ul class="receipt-list">
+<li><code>[7/22 5:22 AM] "It pissed me off, so I decided to cook it. I took it out and tried to cut it, but I didn't know anything about fish scales, so I couldn't cut it at all.That pissed me off even more, so I put it in a bag and threw it away while it was still alive, by the way. I proudly went to my uncle and told him the story."</code><p>Impulse-driven animal cruelty recounted proudly with zero visible remorse (leaving Azrael admitting he "terrifies" her), exposing an unchecked childhood temper and stark empathy gaps.</p></li>
+<li><code>[7/30 12:23 AM] "only I can fix my problems. Telling others just wastes time and makes them feel sad or helpless since they cant solve it anyway." vs "i wish the ppl who are close to me would open up"</code><p>Textbook trauma-forged asymmetry: demands openness from friends while treating his own vulnerability as a burden and waste of time.</p></li>
+<li><code>[7/31 8:46 PM] "being able to feel emotions. not FULLY but to a certain level i dont feel em the way i should."</code><p>Candid confession of deep emotional blunting—likely a protective freeze shutdown after Daniru's death and a turbulent childhood.</p></li>
+<li><code>[8/1 7:13 PM &amp; 9/8 4:06 AM] "i dont feel the need to reply to a person like you" / "for once, try not to make this about yourself. dont be selfish, its not a good look." vs "i feel like you don't consider me your friend and your actively tryna push me away, which pisses me off sm"</code><p>Blatant double standard: uses silent treatment as a superior power move and prosecutes Imran when angry, then erupts with hurt resentment when he feels iced out himself.</p></li>
+<li><code>"wouldnt the mother sue u."</code><p>Legalistic, detached framing surfacing right alongside dark hypotheticals.</p></li>
+</ul></section>
+<section class="sec flags"><ul class="flags-list">
+<li><strong>One-Way Vault:</strong> Asks heavy questions to extract others' pain while locked inside a steel vault, starving friendships of real mutuality.</li>
+<li><strong>Weaponized Silence &amp; Prosecutor Mode:</strong> Uses silence to demean friends and turns cutting when angry, yet cannot tolerate being treated with distance himself.</li>
+<li><strong>Unchecked Temper &amp; Zero Remorse in Cruelty Stories:</strong> Childhood animal torture and arson recounted proudly—paired with blunted emotion and "if i cant have it, they cant either" spite—make him exhausting and volatile outside his inner circle.</li>
+<li><strong>Pride Disguised as Self-Reliance:</strong> Handling everything solo isn't pure stoicism—it's pride guarding against ever looking weak.</li>
+</ul></section>
+</div></article>
+
+<article class="card" id="profile-09" data-av="MA" data-aka="Marien / @Marien(Potato)" style="--hue:345"><h2>marien0109_94601</h2><div class="card-body">
+<section class="sec verdict"><p>Marien is a fiercely hardworking, endearing outsider from Vietnam who wears a sugary ":33" smile specifically to stop anyone from noticing her hidden darkness and leaving her. Listening to everyone while telling nobody anything, she attaches fast, surrenders her own boundaries to keep people, and masks chilling mental-health clues under ESL comedy—yet her warmth is real even as the cheerful persona may be all her friends ever actually know.</p></section>
+<section class="sec core"><p>Marien lives an exhausting solo grind—five hours of math tutoring, restaurant shifts, German study, and skincare ("eat sleep on work study"). Her central fear is stark: being fully known equals being abandoned. Having expected Imran to "ghost me like everybody else but he didn't," she listens to everyone while disclosing nothing real, attaches rapidly, would "trade my life" for a loved one, calls herself "always crazy on doing things," and remains affectionate, generous, and a little naive. She struggles most to express happiness because her flat resting face gets misread as anger, and casually drops alarming past clues—advising someone hurting "Don't take da pill," laughing along when told the server's first impression was "from the mental hospital," friends recalling hospital butterfly stories, and joking "Me need therapy:33."</p><p>She resents being teased, interrupted, or judged on appearance, and craves someone who notices tiny details and will "always take my side." Yet her boundaries are curiously lopsided: she forbids teasing and appearance remarks toward herself while handing out explicit body comments and unflattering critiques of Imran's looks.</p></section>
+<section class="sec social"><p>She acts as the server's chaotic, lovable mascot—unintentionally dropping viral ESL lines ("greatest shape of ass," "become a cockroache," asking "Have you poop today?"), flooding chat with "I luv you" warmth, and asking to sing, voice-act, or play Roblox/99 Nights so she isn't alone. Despite craving loyalty, she actively sabotages romance the instant she catches feelings ("If I like someone I will try to avoid them 😭✌️").</p></section>
+<section class="sec receipts"><ul class="receipt-list">
+<li><code>[7/30 2:04 AM] "But I don't want them to know my story or my struggling bc I don't want them to leave me. Bc I'm okay with dealing it alone :33"</code><p>The ":33" emoticon acts as pure camouflage over a raw abandonment wound: she equates transparency with abandonment.</p></li>
+<li><code>"I thought he will get bored or ghost me like everybody else but he didn't." / "If I like someone I will try to avoid them 😭✌️."</code><p>Exposes a painful history of being dropped paired with active closeness-sabotage whenever attraction turns real.</p></li>
+<li><code>[8/20 2:25 AM] "Don't take da pill, listen to music , take a shower, sing in da bathroom." / "Me need therapy:33" / "Lol that's true" (on looking "from the mental hospital")</code><p>Framed as cozy self-care, yet "Don't take da pill" and hospital butterfly memories point to genuine past crises buried under smiles.</p></li>
+<li><code>[8/10 12:55 PM] "Really happy but face doesn't know how to show it , people mistake me hating it"</code><p>Confirms deep emotional masking—an internal disconnect where even genuine joy fails to show externally.</p></li>
+<li><code>"Teasing me (really don't like it)" &amp; "inappropriate to comment on my appearance" vs [7/31 10:59 PM] "You have the greatest shape of ass that I've ever seen 🫶" (plus unflattering descriptions of Imran) / [9/8 6:34 PM] "Why when I become a cockroache you don't love me anymore?"</code><p>Glaring one-sided boundaries—forbidding appearance remarks on herself while firing body and looks commentary under ESL charm, constantly fishing to confirm she's still liked when acting "weird."</p></li>
+</ul></section>
+<section class="sec flags"><ul class="flags-list">
+<li><strong>One-Sided Boundaries:</strong> Strictly bans teasing and appearance comments toward herself while tolerating teasing to keep friends and freely commenting on others' bodies and faces.</li>
+<li><strong>Silent Resentment &amp; Cute-Persona Trap:</strong> Compulsive agreeableness and mind-reading expectations ("always take my side" without ever expressing hurt) risk building silent resentment or trapping her with people who only love her cute persona.</li>
+<li><strong>Unaddressed Crisis Signals:</strong> Saying she's okay dealing with it alone while dropping "Don't take da pill" and hospital hints deserves a real check-in rather than a laugh.</li>
+<li><strong>Push-Pull Closeness Sabotage:</strong> Attaches rapidly out of abandonment fear yet avoids people she genuinely likes.</li>
+</ul></section>
+</div></article>
+
+<article class="card" id="profile-10" data-av="LA" data-aka="Lari / @lari⁷" style="--hue:35"><h2>starrr.lari</h2><div class="card-body">
+<section class="sec verdict"><p>Lari is a sweet, conflict-averse dreamer and recovering people-pleaser who collects self-love wisdom faster than she applies it. Preaching self-worth like a practiced manifesto while still struggling to say "no," she remains stuck in chronic procrastination and romantic over-idealism—with a surprising flash of glib cruelty whenever judging someone else's painful relationship choices.</p></section>
+<section class="sec core"><p>Lari carries warm, ambitious life goals—a singing career, staying fit, owning a dream home with a dog while avoiding the terror of pregnancy, and showering loved ones with hugs and saved-up gifts. Having once lacked friends until she "started showing up for myself," she champions self-love passionately. Yet beneath her upbeat exterior sits fragile resilience: she admits she still cannot say "no" consistently, breaks down over harsh non-constructive criticism alongside Nicole, battles nightmares and stomach cramps during life transitions, and jokes about "collecting advice like infinity stones" without changing her procrastination habits.</p><p>In love, she refuses to walk away even from a partner guaranteed a happier future elsewhere ("why not at least try?"), an optimism bordering on stubborn romantic risk-taking that may hide attachment anxiety. Worse, her lack of self-doubt shows abruptly when judging others: dismissing a friend who stays with an abuser as "addicted to abuse💔💔."</p></section>
+<section class="sec social"><p>She is the group's affectionate all-caps cheerleader and ideal audience—repeating "twin," offering constant validation, apologizing for low activity and long messages ("that was long IM SORRY"), hyping Sese ("HAI BABY") despite nearly four years without meeting IRL, and fangirling over BTS's Jungkook ("ALREADY crack him every day," flustering into "WHY ARE YOU CLOCKING ME" when Sese teases "SO YOU CHEATING"). Her anxiety about losing friends peeks clearly right inside her jokes.</p></section>
+<section class="sec receipts"><ul class="receipt-list">
+<li><code>[7/31 8:47 &amp; 8:55 PM] "sometimes i still can’t say no to people even tho i’ve gotten MUCH better at it" / "criticism that isn’t constructive."</code><p>Reveals deep sensitivity to disapproval—her niceness is intertwined with fear of upsetting others or getting attacked when vulnerable.</p></li>
+<li><code>[9/11 12:11–12:54 AM] "if you can’t find love for yourself IN YOU, you’re gonna desperately look for it in other people" / "i didn’t have friends until i started showing up for myself"</code><p>Hard-won insight earned from past loneliness—and awareness of how fast insecurity turns into desperate clinginess.</p></li>
+<li><code>[10/13 1:00 AM &amp; 10/15 6:19 PM] "if theres a chance he might be happier with me why not at least try?" / "idk if its crazy but id like to think i can do that too.. so yes id STILL take that chance"</code><p>Romantic ego disguised as devotion: betting on winning someone over even against their 100% guaranteed security elsewhere.</p></li>
+<li><code>[8/10 12:35 AM &amp; 9/8 10:37 PM] "chronic procrastination" / "i’m collecting advice like infinity stones LMAOO"</code><p>Self-aware humor masking real executive paralysis—hoarding motivational tips instead of acting.</p></li>
+<li><code>"shes addicted to abuse💔💔" / "jungkook, my weekly hyperfixation guys, and my friends when i don't talk to them for a few days" / "i always end up saving money to give/send gifts."</code><p>Glib snap judgment reducing abuse to an "addiction" meme alongside revealing friend-loss anxiety and gift-focused affection.</p></li>
+</ul></section>
+<section class="sec flags"><ul class="flags-list">
+<li><strong>Self-Love Manifesto Outruns Practice:</strong> Collects advice without executing, remaining trapped in procrastination, over-apologizing, and weak boundaries.</li>
+<li><strong>Mistaking Agreement for Perspective:</strong> Still learning that agreeing with everyone isn't the same as having a real stance; high suggestibility leaves her easy to sway and vulnerable to manipulative partners.</li>
+<li><strong>Chasing Over Letting Go:</strong> Romantic persistence ("id STILL take that chance") blurs into attachment anxiety and ego-driven chasing.</li>
+<li><strong>Unexamined Cruel Judgments:</strong> Snap verdicts like "addicted to abuse💔💔" expose shallow judgment whenever she hasn't lived someone's struggle.</li>
+</ul></section>
+</div></article>
+
+<article class="card" id="profile-11" data-av="ZE" data-aka="Tharin / Zeref / @zerefツ / @Gub Gub" style="--hue:260"><h2>not_zeref</h2><div class="card-body">
+<section class="sec verdict"><p>Tharin is a cynical, emotionally closed-off minimalist who brushes introspection aside with deadpan one-liners. Clearly carrying quiet regrets about growing up too fast and picking the wrong friends, he refuses to hand anyone in this server more than two sentences of real access—seeing exactly how withholding produces shallow bonds while keeping his drawbridge locked up anyway.</p></section>
+<section class="sec core"><p>His minimal participation speaks louder than essays. Whenever he engages a QOTD seriously, it points straight at disillusionment and feeling like he has been playing catch-up: flatly confirming he regrets meeting certain people, wishing he could reset to infancy keeping his knowledge rather than growing up too fast, and wishing he had told his 14-year-old self to trust time and listen to himself more. He names his flaws in two clipped words—"overthinking" and lack of "Discipline." On the vulnerability thread he briefly gestured at hidden depth and stopped dead: people "kinda dont know certain bit and pieces," leaving him with "less connections." Yet whenever breakups, self-love, love languages, or grief arise, he goes completely silent.</p></section>
+<section class="sec social"><p>He operates as the loyal, low-drama, dry-humored gaming buddy—coordinating Minecraft, Peak, or Repo lobbies, correcting lore, and tossing blunt punchlines ("fuck your life, ..bing bong," "steal yo food") that flatten earnestness on sight. Pressured to join voice calls or threatened by Azrael that she'd stop talking to him, he simply shrugs ("ur loss") and keeps moving with minimal surface investment.</p></section>
+<section class="sec receipts"><ul class="receipt-list">
+<li><code>[7/30] "with certain problems i relate to this heavy but it also feels a little weird cause ppl kinda dont know certain bit and pieces" (causing "less connections")</code><p>Sees clearly how secrecy costs real connections, hints briefly at unseen weight, and refuses to provide details.</p></li>
+<li><code>[7/17 12:35 AM &amp; 6/26 11:18–11:19 PM] "14 yea, tell him to have a little trust in time and to listen to myself a little more" / "keep my knowledge and start over" / "enjoy being a kid more ig rather than growing up too fast ig"</code><p>Rare unguarded slips exposing lingering self-doubt, lost innocence, and yearning for a do-over.</p></li>
+<li><code>[7/3 10:10 PM] "fuck your life, ..bing bong" / "steal yo food"</code><p>His whole reply to "whats your best life advice"—pure nihilistic deflection shutting down sincerity on impact.</p></li>
+<li><code>[7/31 10:05 PM &amp; 8/10 12:06 AM] "Discipline" / "overthinking" / "ur loss"</code><p>Single-word self-diagnoses without elaboration alongside an effortless dismissal of a friend's ultimatum.</p></li>
+</ul></section>
+<section class="sec flags"><ul class="flags-list">
+<li><strong>Implied Depth, Zero Access:</strong> Hints at hidden "bits and pieces" while hitting anyone seeking closeness with an invisible glass wall.</li>
+<li><strong>Self-Aware Isolation:</strong> Recognizes that withholding breeds shallow ties (7/30), yet refuses to lower his drawbridge—risking collecting acquaintances with zero confidants.</li>
+<li><strong>Nihilistic Shutdowns:</strong> Reflexive dismissals ("fuck your life, ..bing bong," "ur loss") work until they shut down people genuinely trying to be earnest with him.</li>
+</ul></section>
+</div></article>
+
+<article class="card" id="profile-12" data-av="SH" data-aka="Shalu / @Shalu" style="--hue:5"><h2>dukecrimson</h2><div class="card-body">
+<section class="sec verdict"><p>Shalu is a blunt, cynical, penny-counting pragmatist and instigator who hides behind nonstop "I'm gay" troll bits and deadpan shock humor so nobody ever sees his real insecurities. Sharp enough to dismantle romantic martyrdom and wasteful flexing on sight, he uses banter to test whether he's accepted—trapping himself inside a class-clown cage where friends never take his serious questions seriously.</p></section>
+<section class="sec core"><p>Shalu views emotional grandstanding and naive idealism with open contempt. When Azrael romanticized giving up 100% of her lifespan, he immediately called it "cringe" and punctured the logic—pointing out it leaves the partner grieving alone. Status-conscious and practical, he audits peers relentlessly: AIBS attendance, leasing an iPhone, burning $50 on kottu instead of a steak. His deepest fear hides in plain sight: asked what he dreads people finding out, he answered "That am actually gay," prompting Azrael's "We already know that" since he'd joked "I'm Gay" earlier. Combined with his cynical line that trusting "the boys" only gets him mocked as "full gay," his true fear is being reduced to a punchline rather than taken seriously—yet on every vulnerable prompt he slams the door with crude sex jokes himself.</p></section>
+<section class="sec social"><p>A campus classmate of Azrael's and late Level 7 entrant, he cements himself as the relentless shitposter—bombarding Imran with gay-flirt bits ("rock hard for you," "Only cutie is u"), dropping aesthetic photo dumps ("Chease wheel"), and needling AIBS peers. Wary of "the boys," he uses humor as an entry ticket that keeps him likable while ensuring nobody digs deeper.</p></section>
+<section class="sec receipts"><ul class="receipt-list">
+<li><code>[7/5 12:05 PM] "if u give all u would be leaving that person alone noh? so thats like them dying and u being alone. no point lol" (with "dies from cringe" GIF)</code><p>Rejects theatrical romantic martyrdom using cold utilitarian logic.</p></li>
+<li><code>[8/2 5:04–5:05 PM] "HM if i let one of the boys tell me am cooked 🥀 / they will tell am full gay / so no one i can trust 🥀"</code><p>Voices genuine cynicism inside meme formatting: expects mockery instead of honest care even among male friends.</p></li>
+<li><code>[8/4 8:54–9:22 PM] "I think u came max 13 times in our 1 year program" / "yeah real smart leasing a Apple phone" / "yeah real smart spending 50 dollers on kottu"</code><p>Sharp, scorekeeping realism—instantly calls out academic hypocrisy and wasteful spending.</p></li>
+<li><code>[7/3 10:10 PM, 8/21 8:17 AM, 9/16 1:47 PM] "Dih" / "That am actually gay" / "They call me the rock, cause am rock hard for you"</code><p>Honest anxiety wrapped in a laugh track alongside repetitive shock-flirting and crude bids for attention whenever real reflection is asked.</p></li>
+</ul></section>
+<section class="sec flags"><ul class="flags-list">
+<li><strong>Self-Built Clown Cage:</strong> Running the same gay/sexual-tension bit for months shields him from intimacy and ensures nobody ever reads him seriously.</li>
+<li><strong>Tests Acceptance Through Jokes:</strong> Uses banter to check if he belongs rather than asking directly for what he wants.</li>
+<li><strong>Cynical Dismissal &amp; Uncalibrated Jabs:</strong> Mocking sincerity as "cringe" reads as harsh and emotionally stunted, while score-keeping jabs often land harder than he notices.</li>
+</ul></section>
+</div></article>
+
+<article class="card" id="profile-13" data-av="NA" data-aka="Nate / Nethaka / @Nate" style="--hue:185"><h2>natezeroeight</h2><div class="card-body">
+<section class="sec verdict"><p>Nate is an awkward, validation-starved university freshman hovering on the edge of the clique, desperate for female attention and deeply touchy when ignored. Swinging rapidly from shy, over-apologetic newcomer politeness to passive-aggressive guilt-tripping, dramatic exits, and clumsy flirting that blows up in real time, he treats any lack of immediate attention as deliberate exclusion.</p></section>
+<section class="sec core"><p>Nate rarely answers deep QOTDs authentically—his sole philosophical drop is borrowing someone else's bleak line ("Depression is a healthy response to inadequacy"), exposing quiet anxiety about not measuring up as he starts university. What drives him is social FOMO and a fragile ego. He checks the pecking order ("Will nicole get mad"), fishes for party invites, and sulks by increments ("Sure." twice, then simmering "🙄🙄" the next morning when Nicole mocked his quote). Playing mediator ("Ok guys | Why dont we just hug it out"), he pouts and announces his exit the second nobody stops arguing to look at him—wanting attention while resenting having to ask for it.</p></section>
+<section class="sec social"><p>He moves like an uncalibrated tourist trying to decode server rules ("Pls explain anna," "Wait are we allowed to casually talk in this chat"), chronically polite yet out of sync with group slang, flirting transparently with Sese ("Yes bbg") and stumbling over greeting Sajani "(with no sexual intent)" right before blushing over seeing her Instagram and retracting weak playground comebacks ("Scratch that | I know you are but what am I | Sorry | That was too rude").</p></section>
+<section class="sec receipts"><ul class="receipt-list">
+<li><code>[7/22 9:41 PM &amp; 7/23 6:31 AM] "Damn we weren't even invited / Bet if I didnt talk to you here we wouldn't have been invited" / "🙄🙄"</code><p>Manipulative guilt-tripping over an unscheduled birthday, stewing passively hours later even after Sese tried smoothing it over.</p></li>
+<li><code>[8/1 7:16–7:19 PM] "I sense toxicity" / "Ok guys | Why dont we just hug it out" / "Okay im being given no attention so imma dip"</code><p>Inserts himself as peacekeeper into someone else's conflict, then announces his own exit purely to fish for attention when ignored—and returns anyway.</p></li>
+<li><code>[8/27 9:10–9:11 PM] "Hi (with no sexual intent)" / "Wait wait nvm sorry / I just saw the ig"</code><p>Caught pretending casual innocence while blatantly thirsting, spiraling instantly under embarrassment.</p></li>
+<li><code>[7/22 9:27–9:28 PM] "Depression is a healthy response to inadequacy" / "Wait are we allowed to casually talk in this chat / Will nicole get mad" / "Sure." (twice)</code><p>Bleak borrowed inadequacy paired with anxious hierarchy deference and passive sulking.</p></li>
+</ul></section>
+<section class="sec flags"><ul class="flags-list">
+<li><strong>Entitlement &amp; Hierarchy Resentment:</strong> Defers nervously to the clique hierarchy ("Will nicole get mad") then resents it; equates any lack of spotlight with hostile exclusion.</li>
+<li><strong>Fragile Pride &amp; Chronic Over-Apologizing:</strong> Takes light teasing as rejection ("Sure." -> "🙄🙄"), announces fake exits for attention, and over-apologizes in ways that make him look even less secure.</li>
+<li><strong>Transparent, Awkward Thirst:</strong> Over-explaining innocent intent while clumsily flirting makes him exhausting to include.</li>
+</ul></section>
+</div></article>
+
+<article class="card" id="profile-14" data-av="DI" data-aka="Dilesh / @DiL" style="--hue:48"><h2>dxd36_gs</h2><div class="card-body">
+<section class="sec verdict"><p>Dilesh is a self-congratulatory motivational-poster romantic who genuinely views himself as an already-perfected diamond encased in rough grit—oddly punctuated by juvenile edge-jokes. Happily attached, decent, and relentlessly preachy at greeting-card depth, he dishes martyr-coded humble-brags while dodging real personal dirt.</p></section>
+<section class="sec core"><p>His identity revolves around having "arrived": happy with his career and vocal that he has "the love of my life." He turns QOTD threads into TEDx stages—repeating "everything happens for a reason" and "never compare yourself to anyone because everyone is different," and lecturing younger peers on effort, destiny, and priceless seconds. Refusing a lighthearted personality quiz to brag about diamond-core exoplanet `55 Cancri e` ("dont judge a book by its cover") reveals an ego eager to appear uniquely profound underneath. While capable of genuine decency (reasoning on lifespan sacrifice that giving all would be "selfish" by leaving his partner grieving), his sole offered flaw is "im too nice"—casting himself as an exploited saint until Sese punctured it. Rarely saying anything uncomfortable about himself, he even asks "what part of yourself did you lose in your last relationship" while skipping answering it himself.</p></section>
+<section class="sec social"><p>He creates jarring whiplash between serene relationship guru dropping light QOTDs (deathrow meals, apocalypse plans) and frat-boy jokester tossing "sesemahdickiesaurus," "fart smella," "Anjana's father ❤️," and "Racist and even more racist" right next to heart emojis, fitting in effortlessly without ever taking a risky stance.</p></section>
+<section class="sec receipts"><ul class="receipt-list">
+<li><code>[8/5 5:34 AM] "I’m already happy with the career I have, and I already have the love of my life so no way in hell I wouldn’t trade that for a shortcut."</code><p>Settled confidence carrying unmistakable smugness—turning a hypothetical prompt into a public victory lap.</p></li>
+<li><code>[8/10 11:42 AM &amp; 2:16 PM] "im too nice" / "Being too nice meaning people take advantage of that kindness"</code><p>Textbook humble-brag disguised as vulnerability, painting himself as an innocent martyr exploited by lesser people.</p></li>
+<li><code>[7/21 2:25–2:26 PM] "55 cancri e... its a lava planet but the inner layer is diamonds / basically dont judge a book by its cover"</code><p>Swaps out a lighthearted quiz for an elaborate diamond-planet metaphor to signal depth superior to peers.</p></li>
+<li><code>"everything happens for a reason" / "never compare yourself to anyone because everyone is different" (plus asking "what part of yourself did you lose in your last relationship" unanswered)</code><p>Greeting-card slogans deployed directly in place of honest disclosure while soliciting dirt from others.</p></li>
+<li><code>[10/6 4:08 PM &amp; 8/11 7:25 PM] "Anjana’s father / Racist and even more racist" / "sesemahdickiesaurus" / "fart smella"</code><p>Immature middle-school edge and lazy jabs lurking straight under his polished self-help posture.</p></li>
+</ul></section>
+<section class="sec flags"><ul class="flags-list">
+<li><strong>Accountability Immunity &amp; Conflict Avoidance:</strong> Believing his biggest flaw is "too nice" blocks self-correction, can gaslight others into looking ungrateful, and likely disguises quiet conflict-avoidance.</li>
+<li><strong>Preachy Asymmetry:</strong> Encourages others to bare messy relationship scars while keeping himself completely safe behind slogans.</li>
+<li><strong>Positivity Over Depth:</strong> Greeting-card wisdom substitutes for introspection, undercut by jarring toilet/race puns.</li>
+</ul></section>
+</div></article>
+
+<article class="card" id="profile-15" data-av="FE" data-aka="Aalam / Felix / @Felix _11" style="--hue:140"><h2>felixsyphone</h2><div class="card-body">
+<section class="sec verdict"><p>Aalam is an emotionally barricaded stoic impersonator and the group's willing designated underdog. Using silence, dry sarcasm, and deliberate self-sabotage so nobody can hurt or reject him, he masks admitted low "Confidence" behind Kratos clichés—punishing people who like him by making them "hate" him while leaving everyone unable to tell when he actually means anything.</p></section>
+<section class="sec core"><p>His opacity is deliberate. Pressed on his operating code, he reveals clean fearful-avoidant sabotage: if interested in someone, he tries to make them hate him; if he dislikes them, he deletes them; if someone requires effort to "deal with," he walks away. He admits his hardest emotion to express is "Confidence," marks 2021 as the death of his childhood without explaining why, and follows a practical, avoidant ethic ("Don't Be Sorry, Be Better," "If they are someone you have to 'deal' with, then don't"). His humor is so consistent that peers can't tell when he means it—yet authoring one loaded QOTD (unconditional love without understanding vs. total understanding without love) unmasks his core romantic pessimism that true intimacy is broken.</p></section>
+<section class="sec social"><p>He operates as a low-volume drive-by sniper—dropping cat memes, halal jokes ("Alhamdulillah"), Kratos slogans, and dry jabs ("Knowing you were in canada suffering as we were together having fun"; mocking the server's earnest essays as "smallest question asked btw"). He accepts "slave" and "Ur nothing" ("Thank God") roles willingly—keeping him inside the group while staying small—pushes past direct boundaries when convenient ("it had to be asked" over Imran's plea), and instantly kills serious romantic subtext with "say what now" before vanishing.</p></section>
+<section class="sec receipts"><ul class="receipt-list">
+<li><code>[9/6 2:58 PM] "If i was interested I'd prolly make them hate me / If I despise them I would Ignore them"</code><p>Textbook fearful-avoidant self-sabotage framed as a flirting joke—preemptively forcing rejection to protect his ego.</p></li>
+<li><code>[9/11 5:29 PM &amp; 8/2 12:35 AM] "If they are someone you have to "deal" with, then don't" / "Confidence"</code><p>Cutthroat zero-tolerance slogans masking genuine self-doubt openly admitted in one word.</p></li>
+<li><code>[9/15 9:32 PM] "Would you rather have someone who truly loves you but could never understand you, or would you rather someone who truly understands you but could never love you"</code><p>His lone QOTD exposes bleak romantic cynicism: presenting love and comprehension as mutually exclusive.</p></li>
+<li><code>[8/28 6:11 PM &amp; 9/8 8:49 AM] "Mark zuckerberg" / "say what now" / "smallest question asked btw."</code><p>Turns a vulnerable voice-breaking prompt into a meme, dodges Azrael's public romantic confrontation immediately, and snipes earnest essays from the sidelines.</p></li>
+<li><code>"it had to be asked" (after Imran's "aalam pls don't ask it") / "Don't Be Sorry, Be Better"</code><p>Pushes past direct friend requests when he wants to poke the room while leaning on borrowed Kratos stoicism.</p></li>
+</ul></section>
+<section class="sec flags"><ul class="flags-list">
+<li><strong>Emotional Cowardice Sold as Stoicism:</strong> Trying to make someone who cares "hate" you isn't cool independence—it's selfish punishment that exhausts anyone decoding mixed signals.</li>
+<li><strong>Default Shutdown Humor:</strong> Consistent sarcasm guarantees nobody knows when he's sincere, while his "unbothered minimalist" act hides low confidence.</li>
+<li><strong>Selective Boundary Disrespect:</strong> Accepts being the group's joke to dodge real stakes, yet overrides friends' explicit "don't ask" boundaries at will.</li>
+</ul></section>
+</div></article>
+
+<article class="card" id="profile-16" data-av="KE" data-aka="Kevin / @𖣂" style="--hue:355"><h2>zoro_88678</h2><div class="card-body">
+<section class="sec verdict"><p>Kevin is an unfiltered, shock-value provocateur who hides behind all-caps racial slurs, hypocritical religious policing, and loud frat-boy chaos while keeping real unrequited romantic angst strictly off-screen. Known by friends to have zero censor online or in public, he doesn't think much about what his words do—treating boundaries as a joke until he casually drops loaded heartbreak prompts into the void.</p></section>
+<section class="sec core"><p>His chat footprint runs on shock-jock contradictions. He loudly shames Maazin for dating as a Muslim ("kafir," "pull a maddness"), yet posts a standalone all-caps racial slur as the "type of person he hates" and swaps graphic "milk" jokes with Imran. Off-log friend reports confirm he has no filter: anti-Muslim explosion jokes in a theater, "no censor" at movie credits, screaming Sinhala profanities inside Taco Bell when startled by a balloon. Beneath the loud 6'3" exterior sit odd glimpses of softness—a melancholic indie playlist (`Bleachers`, `Beach House`, `O Children`), rare sincere check-ins ("how are yall doing? hows life going"), practical encouragement ("count down from five four three two one and js do it"), and a lone unprompted QOTD about unrequited love left completely unanswered by himself.</p></section>
+<section class="sec social"><p>An erratic Level 4 wildcard, he drops in mid-chaos ("say wallahi what tf hqve i come back too," "YOU'RE SUPPOSED TO BE THE MILK MAN!"), fires short, accurate yet slightly cruel physical jabs ("tiny man with a beard" at Imran), and vanishes for weeks before checking in without volunteering anything about his own life.</p></section>
+<section class="sec receipts"><ul class="receipt-list">
+<li><code>[8/22 12:04 AM] "NIGGERS"</code><p>Standalone all-caps racial slur with zero joke setup as his sole response to what kind of person he hates—lazy shock provocation dodging any real personal boundary.</p></li>
+<li><code>[7/19 2:29 PM] "the muslim in a relationship fuck no / nga tryna pull a maddness here / kafir"</code><p>Selectively polices a friend's private dating life with religious shaming while freely tossing slurs and crude jokes himself.</p></li>
+<li><code>[10/18 7:52 AM] "whats worse: loving someone you cant have, or having someone you cant love?"</code><p>Dropped out of nowhere after weeks of silence with zero personal answer—exposing obvious unrequited heartbreak kept off-screen.</p></li>
+<li><code>[7/31 1:54 PM &amp; 10/10 11:45 PM] "uhhh the guy from apply bright??" / "spiders" / "YOU'RE SUPPOSED TO BE THE MILK MAN!"</code><p>Throwaway absurdity blocking every prompt targeting genuine vulnerability, matching reports of "no censor."</p></li>
+<li><code>"how are yall doing? hows life going." / "count down from five four three two one and js do it" / "tiny man with a beard."</code><p>Late sincere check-ins and blunt encouragement mixed awkwardly with cruel physical shorthand.</p></li>
+</ul></section>
+<section class="sec flags"><ul class="flags-list">
+<li><strong>Carelessness Sold as "No Filter":</strong> Slurs, anti-Muslim theater jokes, and startled public outbursts aren't honesty—they're reckless lack of impulse control without caring what words do.</li>
+<li><strong>Hypocritical Moral Policing:</strong> Quick to yell "kafir" at friends' private choices while dismissing every boundary as "all jokes."</li>
+<li><strong>Zero Vulnerability Exchange:</strong> Keeps his own heartbreak off-screen behind vague prompts and multi-week disappearances, making him hard to trust seriously.</li>
+</ul></section>
+</div></article>
+
+<article class="card" id="profile-17" data-av="YU" data-aka="Yuneth / @Yuneth22" style="--hue:295"><h2>yuneth5395</h2><div class="card-body">
+<section class="sec verdict"><p>Yuneth is a sharp existentialist thinker and the group's scapegoat—and a quietly proud one. Nursing deep bitterness over feeling excluded and mocked, he keeps score of every slight while poisoning his own sympathy through cheap bigotry and hypocritical policing, eventually delivering grudges as self-flattering indictments instead of clean conflict.</p></section>
+<section class="sec core"><p>He displays genuine philosophical clarity when he bothers—arguing the universe is indifferent and meaning must be created rather than discovered—which makes his usual reliance on slurs and victim-posturing a deliberate choice. He asks `@everyone` what would disappoint their younger selves, ignores his own prompt completely, immediately polices Sese for smoking and Himash as a "drug addict" ("ganja kariya," "pure drugs"), and wishes billions dead hoping they are Indians. Behind that edge sits palpable loneliness: sulking when nobody joins VC ("only kevin care") and eventually posting a melodramatic anonymous indictment (read by the group as targeting Imran) accusing an enemy of hating him from "guilt" or "envy" while crowning himself the dignified saint who "walked away out of respect."</p></section>
+<section class="sec social"><p>Added late to an old clique, he occupies an unfair peripheral punching-bag slot—mocked by Imran, Nicole, and Azrael as "house plant," "adopted black brother," and "C cup" guy while they envy his nice house. He mostly takes it or plays along, occasionally retaliating with crude threats ("piss in her bed") and bitter guilt trips that fail to earn real respect.</p></section>
+<section class="sec receipts"><ul class="receipt-list">
+<li><code>[7/22 12:12 AM] "I believe the universe is indifferent- tht there is no meaning or rather tht meaning hasnt been discovered, its created"</code><p>The cleanest philosophical structure in the log—proving real intellect underneath his petty conduct.</p></li>
+<li><code>[9/8 4:18 PM] "I genuinely wonder sometimes wht did I ever do to u for u to treat me like I was ur enemy? u gave me every reason to hate u, yet I never did. I walked away out of respect, so y did u still choose to hate me? guilt? envy? or is tht just who u r?"</code><p>One-sided passive-aggressive martyr speech phrased as a question, casting himself as dignified and beloved while diagnosing dislike as "envy."</p></li>
+<li><code>[7/21 11:30 PM] "not for the dearest person just cause i hope the billions of ppl r indians"</code><p>Anti-Indian racism tossed out as a cheap punchline in a mass-death dilemma with zero honest value judgment.</p></li>
+<li><code>[7/21 12:23 AM &amp; 7/20 9:39 PM] "u didnt join me either 😕 / only kevin care" / "ganja kariya" / "pure drugs"</code><p>Petty scorekeeping over VC abandonment alongside hypocritical policing of friends' smoking.</p></li>
+<li><code>"If urself from 5 years ago met you today, what would disappoint them the most?"</code><p>Asked `@everyone` to expose regrets while giving zero answer himself.</p></li>
+</ul></section>
+<section class="sec flags"><ul class="flags-list">
+<li><strong>Self-Righteous Martyrdom:</strong> Holds grudges quietly, then fires self-flattering indictments ("walked away out of respect") instead of addressing friction cleanly.</li>
+<li><strong>Hypocritical Finger-Pointing:</strong> Demands others open up while staying closed, shaming friends' habits while slinging slurs and crude threats.</li>
+<li><strong>Plays Along With His Own Scapegoating:</strong> Although the group's mockery of him is genuinely unfair, playing along and trading cheap bigotry keeps people holding him at arm's length.</li>
+</ul></section>
+</div></article>
+
+<article class="card" id="profile-18" data-av="AC" data-aka="Ace" style="--hue:170"><h2>ace11o</h2><div class="card-body">
+<section class="sec verdict"><p>Ace is a detached stan-Twitter transplant who parachutes into the server roughly once a month to confirm they are alive, roast themselves before anyone else can, and vanish again. Brief comments show real sibling loyalty and zero patience for mediocre men—yet treating chronic flaking as a quirky "absent father" brand means the group has already stopped expecting anything real from a thin sample built mostly on dodges.</p></section>
+<section class="sec core"><p>Existing on the fringes of Coconut Rice—without even permissions for `#yap` ("am I banned")—Ace wanted in without wanting to risk anything. Their single sincere drop was grounded in family loyalty: facing sudden death, the real heartbreak is saying goodbye to siblings. When Sese unpacked a manipulative ex, Ace offered instant blunt solidarity ("he sucks ass"). Everywhere else, they dodge prolonged introspection, breakups, fears, and philosophical threads completely, hedging knowledge ("what people call twt I think") and turning absence into preemptive entry-ticket comedy.</p></section>
+<section class="sec social"><p>Carrying unmistakable stan-Twitter cadence ("stan twt," "son im crine") that clashes hilariously with Imran's literal-minded Sri Lankan Discord humor, Ace embraces the group's pre-assigned role ("thanks son," tagged by Dax as the absent "cuck" in the 1-word game). Mocking themselves first ("I am a twat," "absent father... cucking and leaving," "hello world") keeps them easygoing, friction-free, and silently checking in enough to track drama without investing.</p></section>
+<section class="sec receipts"><ul class="receipt-list">
+<li><code>[7/14 5:02 PM] "if I had to randomly die / saying goodbye to my siblings / would suck"</code><p>Their lone unmasked emotional moment—unsentimental and anchored purely in family loyalty.</p></li>
+<li><code>[7/14 5:16 PM] "I am a twat" / "I feel like an absent father coming to this discord randomly and then cucking and leaving ... someone call the cops on me ig"</code><p>Preemptive self-deprecation as armor: roasting their own flakiness removes any expectation to stay or open up.</p></li>
+<li><code>[7/14 5:19 PM] "where is the yap section i cant find it / am I banned"</code><p>Confirms literal peripheral status—disconnected enough not to know why main channels are hidden.</p></li>
+<li><code>[7/20 4:40 PM] "he sucks ass" / "what people call twt I think" / "thanks son" / "hello world"</code><p>Zero-fluff solidarity with Sese alongside hedged casual lurking and light entry banter.</p></li>
+</ul></section>
+<section class="sec flags"><ul class="flags-list">
+<li><strong>Flakiness Branded as Charm:</strong> Turning inconsistency into an "absent father" meme ensures the group stops expecting anything real; easy to like, impossible to rely on.</li>
+<li><strong>Zero-Risk Irony Shield:</strong> Uses self-insulting humor and Twitter armor to stay liked without putting skin in friendships.</li>
+<li><strong>Thin Sample Caveat:</strong> With minimal appearances centered on dodges, most of Ace's character remains off-screen.</li>
+</ul></section>
+</div></article>
+
+<article class="card" id="profile-19" data-av="MZ" data-aka="Maazin / @M5master" style="--hue:25"><h2>m5master</h2><div class="card-body">
+<section class="sec verdict"><p>Maazin is the server's quietest enigma who wears chronic exhaustion, secrecy, and theatrical mystery like armor while letting his own cousin and classmates treat him as a walking punchline. Underneath eight tiny messages in five months sit real grief over his late father, hidden relationship ambiguity, and unspoken burnout he hides as "privacy"—making him look emotionally unavailable even if the server's myth of him outweighs the small sample.</p></section>
+<section class="sec core"><p>Posting just eight tiny messages (Level 3 Arcane) across five months, Maazin ironically sparks the loudest curiosity—half the group wants to know more about him or peek inside his mind. His sparse fragments paint a heavy silhouette: initiating the deceased-loved-one regret prompt solely to confess wishing he had chilled and spoken with his late dad more; describing himself as "sleep deprived"; and offering one word—"breathe"—to someone in distress. He hides basic life facts others share openly and calls it privacy, actively self-mythologizing ("a man of many names with a secret no outsider should know," validated by Azrael as "dropping facts") while stunning peers who never knew he was dating anyone ("Wait a damn second-") with conspicuously detached girlfriend phrasing hinting at dry sarcasm or heavy compartmentalization.</p></section>
+<section class="sec social"><p>As Imran's cousin and Dax's old classmate, group lore casts him endlessly as the "bomb," "slave," and "abusive relative," with peers joking about his inner thoughts ("either incest or prayers") and Anjana wanting inside his head. He mostly drops cryptic micro-lines ("weapons for toys," "nein | no"), while Azrael's barbed reply after "breathe" ("smth which u clearly lacked, last time i heard from u") hints at genuine panic or burnout kept fiercely off-server.</p></section>
+<section class="sec receipts"><ul class="receipt-list">
+<li><code>[8/13 12:32 AM] "not chilling with my dad more and speaking to him more."</code><p>Initiated the regret prompt himself just to state plain, genuine grief—proving real loss lies under his silence.</p></li>
+<li><code>[7/19 10:38 AM] "I haven't broken up with her yet so dont know but from her pov she likes me ."</code><p>Shocked Azrael and Dax by keeping an active girlfriend hidden from an oversharing server while sounding strangely detached.</p></li>
+<li><code>[9/2 11:06 PM] "a man of many names with a secret no outsider should know"</code><p>Performative mystery embraced by Azrael as "dropping facts," reinforcing his guarded offline circle.</p></li>
+<li><code>[7/29 11:25 PM &amp; 8/20 6:43 AM] "sleep deprived" / "breathe"</code><p>Exhaustion confession paired with a one-word reply to someone describing distress—followed by Azrael's jab exposing off-server panic held under wraps.</p></li>
+<li><code>"weapons for toys" / "nein | no"</code><p>Cryptic first impression and minimalist shutoffs preserving his unreadable mystique.</p></li>
+</ul></section>
+<section class="sec flags"><ul class="flags-list">
+<li><strong>Extreme Containment Sold as Privacy:</strong> Makes him practically unknowable even to close relatives and old friends ("wish you knew more abt... Maazin"); mystery can read as flat unavailability.</li>
+<li><strong>Passive Caricature Acceptance:</strong> Letting peers stereotype him as a "bomb" or "slave" while hiding burnout, grief, and relationship ambiguity deepens isolation.</li>
+<li><strong>Small-Sample Myth Inflation:</strong> With eight lines total, the group's fascination with his mystique may be bigger than the person actually shown.</li>
+</ul></section>
+</div></article>
+
+<article class="card" id="profile-20" data-av="MO" data-aka="Moonsy" style="--hue:252"><h2>masamune_hys</h2><div class="card-body">
+<section class="sec verdict"><p>Moonsy is a polished, performative newcomer who writes like an ornate quote generator—delivering lofty phrasing that sounds impressive while carrying almost nothing personal. Hiding behind Shakespearean flourishes, consultant non-answers, and Reddit-borrowed references, they treat quotes and aesthetics as a personality, leaving nobody knowing anything real about them whether out of shyness or pure intellectual vanity.</p></section>
+<section class="sec core"><p>Moonsy's signature move is theatrical evasion. Declaring the grandest tragedy to be "the refusal to awaken to one's own existence" earned Coorasae's "Shakespeare who" and Lari's "the level of english i aspire to reach," yet holds zero anecdote, zero personal cost, and zero "I." Asked how much emotion governs choices where peers offered real percentages, Moonsy delivered corporate fence-sitting ("strike a balance between both, adjust as necessary"). On love versus happiness, they substituted a Reddit/movie trope ("the weird lamp in the living room") and balanced wrap-up, admitting when asked that it came from Reddit while flexing taste ("If you got the reference, yuno elite ball"). Both the material and persona feel borrowed.</p></section>
+<section class="sec social"><p>They operate as the polite, uncontroversial aesthetic visitor: dropping lofty wisdom or cool indie/alt music cred (Arctic Monkeys, Mac DeMarco, The Marías), nodding along with agreeable filler ("true, true"), and offering formal pleasantries ("I'd be honoured to be someone you can come with either types of news") before slipping away.</p></section>
+<section class="sec receipts"><ul class="receipt-list">
+<li><code>"The grandest tragedy, the deepest shadow a soul can cast upon its own canvas, is the refusal to awaken to one's own existence."</code><p>Impersonal Shakespearean flourish engineered to sound profound while revealing zero actual self.</p></li>
+<li><code>"strike a balance between both, adjust as necessary"</code><p>Management-consultant non-answer dropped where everyone else gave concrete emotional percentages.</p></li>
+<li><code>"the weird lamp in the living room" / "nah, it's from reddit" / "If you got the reference, yuno elite ball"</code><p>Admits borrowing Reddit material instead of giving an honest answer, pivoting into status-signaling over niche taste.</p></li>
+<li><code>"I'd be honoured to be someone you can come with either types of news" / "true, true"</code><p>Formal politeness and frictionless agreeableness that keep peers permanently at arm's length.</p></li>
+</ul></section>
+<section class="sec flags"><ul class="flags-list">
+<li><strong>Quotes as Personality:</strong> Treats Reddit references and borrowed prose as a substitute for genuine personality and lived disclosure, making closeness unlikely.</li>
+<li><strong>Masking Behind Polish:</strong> Whether hiding shy uncertainty or simply enjoying sounding smart, the curated veneer prevents anyone from knowing who is behind it.</li>
+<li><strong>Never Picks a Real Side:</strong> Agreeable "true, true" habits and balanced clichés guarantee zero conflict and zero substance.</li>
+</ul></section>
+</div></article>
+
+<article class="card" id="profile-21" data-av="TI" data-aka="tinkiri" style="--hue:120"><h2>_tinkiri_</h2><div class="card-body">
+<section class="sec verdict"><p>Tinkiri is a peripheral spectator and zero-risk reactor who strictly comments on louder members' moments while keeping their own life scrubbed offscreen. Across just five messages, they sidestep honest conversation with jokes, praise others instead of offering anything of their own, and hide comfortably in borrowed energy from the room's main talkers.</p></section>
+<section class="sec core"><p>Handed an open prompt for honesty—"what's scarier than a real conversation?"—tinkiri dodged with one word: "ducks." Across the entire log, they offered zero substantive QOTD answers about their own values, regrets, or feelings. Instead, their perspective surfaces purely by reaction: cheering Dax's deepest essay ("why is dax spitting straight bars omd peak") and playfully mocking Imran ("this is how I imagine Imran when he gets mad"). They watch closely enough to read group dynamics, admiring articulate members while avoiding any personal exposure.</p></section>
+<section class="sec social"><p>They take the safest seat in the room as a quiet fan along the edges—dropping emojis ("🤘"), meme pictures, and quick praise without ever starting threads, asking QOTDs, or taking risky stances of their own.</p></section>
+<section class="sec receipts"><ul class="receipt-list">
+<li><code>"ducks."</code><p>One-word joke sidestepping "what's scarier than a real conversation?" without risking honesty.</p></li>
+<li><code>"why is dax spitting straight bars omd peak"</code><p>Public praise for the articulate essayist—participating strictly from the cheering section.</p></li>
+<li><code>"this is how I imagine Imran when he gets mad" (with picture)</code><p>Shows attentive lurking and comfort teasing safely without exposing anything personal.</p></li>
+<li><code>"🤘" (plus zero substantive QOTD answers in the entire log)</code><p>Emoji reaction replacing real conversation across a minimal, risk-free presence.</p></li>
+</ul></section>
+<section class="sec flags"><ul class="flags-list">
+<li><strong>Hiding in Borrowed Energy:</strong> Coasts on reactions and louder members' energy rather than contributing original substance—making them hard to read and easy to forget.</li>
+<li><strong>One-Way Spectatorship:</strong> Reads everyone else's vulnerability while staying completely off the record.</li>
+<li><strong>Thin-Sample Sketch:</strong> Five messages provide only a sketch defined mostly by polite avoidance.</li>
+</ul></section>
+</div></article>
+
+<article class="card" id="profile-22" data-av="FL" data-aka="Flame" style="--hue:12"><h2>flame3579</h2><div class="card-body">
+<section class="sec verdict"><p>Flame is a rare, dry-witted lurker who speaks only when holding a pre-baked sitcom quip or internet dating cliché. His humor lands cleanly at others' expense while staying completely out of every emotional thread—letting borrowed rules and observation do the talking until he earns his literal label as the "invisible guy."</p></section>
+<section class="sec core"><p>His scant contributions reveal someone who picks the rule over the opinion and the reference over the confession. Asked about relationship age gaps, he recited the stock formula ("Divide your age by half , and then add 7 | thats the minimum age to date without it being weird") rather than sharing an authentic moral view—so cliché Nicole pegged it ("pls be unique"). Zero emotional QOTDs carry his name, matching Azrael's exact cartoon pick for him ("invisible guy from hotel transalvania"): an observer who drops a timed line and never reveals himself.</p></section>
+<section class="sec social"><p>He sits silently in the audience until an opening appears, then snipes cleanly—roasting Sajani's repeated fake divorces from Anjana by comparing her to Ross from <em>Friends</em>. Letting dry observation speak while keeping himself completely out of it keeps him safe, unmemorable, and shielded from scrutiny.</p></section>
+<section class="sec receipts"><ul class="receipt-list">
+<li><code>"Divide your age by half , and then add 7 | thats the minimum age to date without it being weird" (Nicole: "pls be unique")</code><p>Substitutes a universally recycled math rule for personal thought—instantly clocked as unoriginal.</p></li>
+<li><code>"Isn't this like ur second divorce | Haven't seen a person so eager to impersonate this part of Ross' s life."</code><p>Sharp sitcom wit targeting Sajani's drama while keeping zero spotlight on himself.</p></li>
+<li><code>"invisible guy from hotel transalvania" (Azrael's label)</code><p>Group consensus pinning his defining presence as barely there.</p></li>
+<li><code>Five messages total with zero personal QOTD answers</code><p>Consistent pattern of silent spectatorship punctuated only by safe comedic snipes.</p></li>
+</ul></section>
+<section class="sec flags"><ul class="flags-list">
+<li><strong>Formulas Replacing Thought:</strong> Lets borrowed dating rules and sitcom quips stand in for genuine opinions, which the group notices.</li>
+<li><strong>Costly Invisibility:</strong> Choosing total safety keeps his ego shielded while costing him any real closeness.</li>
+<li><strong>Oversized Impression vs. Tiny Sample:</strong> With five messages total, the group's image of him may be bigger than the person actually shown.</li>
+</ul></section>
+</div></article>
+
+<article class="card" id="profile-23" data-av="TH" data-aka="Thinal / Csalt / &quot;Seasalt&quot; / @SEASALLLT" style="--hue:198"><h2>thinal_lll</h2><div class="card-body">
+<section class="sec verdict"><p>Thinal is the lowest-volume member in the channel—a longtime private confidant of Nicole's who treats the public QOTD space like a disposable playlist board while remaining completely unreadable to everyone else. Across nearly five months and 6,000 messages, he answered zero personal prompts and dropped four tiny drive-by messages; whether that reflects selective withholding or simply shyness and disinterest, he collects insider warmth while paying zero conversational rent.</p></section>
+<section class="sec core"><p>His four direct entries—a mute GIF, "Hey mama," "🤓," and unembarrassed PinkPantheress emoji spam—show an affectionate, low-effort music fan unafraid to look slightly goofy around curated taste. Yet Nicole's testimony deepens the picture: having known him since 2017/2018, she trusts him as the single person she brings real problems to ("never had a problme WITH him tho") and even factors him into her 20-year household pet plans. Because Nicole is deeply guarded and confrontation-averse, holding that role speaks well of his private temperament.</p><p>At the same time, it proves his silence isn't peripheral alienation: he enjoys private backstage trust offline/in DMs while refusing to place a single flaw, regret, or belief on the public table alongside peers. Still, caution is warranted—with only four direct messages on record, anything beyond "affectionate, low-drama, and publicly silent" risks over-invention.</p></section>
+<section class="sec social"><p>In the channel he acts like an aesthetic tourist (Level 6 Arcane)—greeting briefly with a stats.fm flex or reaction emoji and vanishing. Meanwhile the server uses him as a fixed landmark, granting him "Stepbrother" status in Nicole's family lists, an identity tag in the level bot, and the "csalt" nickname without him ever entering the fray.</p></section>
+<section class="sec receipts"><ul class="receipt-list">
+<li><code>[7/2 6:26 PM] https://klipy.com/gifs/angry-embarrassed</code><p>Opening appearance is a mute reaction GIF after an AI-prompted joke—zero words, zero personal stake.</p></li>
+<li><code>[9/12 7:52 PM] "Hey mama" [statsfm-share-1789222912313.png] / "🤓"</code><p>Skips writing a personal music list in favor of an automated stats graphic and cheeky emoji, keeping effort near zero.</p></li>
+<li><code>[9/23 12:01 AM] "Pink pantheress 🥹🥹🥹🥹🥹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹"</code><p>Open musical enthusiasm on curated taste while bypassing adjacent relationship and emotional prompts completely.</p></li>
+<li><code>[9/15 12:10 AM, via Nicole] "i usually dont tell / unless its seasalt / i always tell him if i hve a problem, never had a problme WITH him tho" / "i hve known thinal since 2018 | 2017"</code><p>Proves he is safe privately and neither disconnected nor shy with Nicole—making his public silence look selective rather than alienated.</p></li>
+</ul></section>
+<section class="sec flags"><ul class="flags-list">
+<li><strong>Spectator Privilege &amp; Asymmetry:</strong> Reading peers' insecurities, breakups, and shame across 6,000 messages while disclosing nothing real creates one-way familiarity; outsiders get curated detachment and playlists.</li>
+<li><strong>Zero-Rent Insider Warmth:</strong> Collects "Stepbrother" and "csalt" affection without ever putting his own character or opinions on the table.</li>
+<li><strong>Shyness, Disinterest, or Calculation?:</strong> His QOTD absence may reflect shyness, plain disinterest, or selective withholding—beyond "affectionate and low-drama," there isn't enough evidence here for more than a sketch.</li>
+</ul></section>
+</div></article>
+
+</div></div></main></div></div>
+<button type="button" class="back-top" id="backTop" title="Back to top" aria-label="Back to top">↑</button>
+<script>
+(function(){
+const cards=Array.from(document.querySelectorAll('.card'));
+const navList=document.getElementById('navList');
+const searchInput=document.getElementById('searchInput');
+const clearSearch=document.getElementById('clearSearch');
+const matchStatus=document.getElementById('matchStatus');
+const emptyState=document.getElementById('emptyState');
+const sidebar=document.getElementById('sidebar');
+const backdrop=document.getElementById('backdrop');
+const menuBtn=document.getElementById('menuBtn');
+const expandAllBtn=document.getElementById('expandAllBtn');
+const collapseAllBtn=document.getElementById('collapseAllBtn');
+const themeBtn=document.getElementById('themeBtn');
+const mobileThemeBtn=document.getElementById('mobileThemeBtn');
+const progressBar=document.getElementById('progressBar');
+const backTop=document.getElementById('backTop');
+const sidebarCount=document.getElementById('sidebarCount');
+
+function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+
+cards.forEach((card,idx)=>{
+const h2=card.querySelector('h2');
+const name=h2?h2.textContent.trim():card.id;
+if(h2)h2.remove();
+const aka=card.dataset.aka||'';
+const av=card.dataset.av||name.slice(0,2).toUpperCase();
+const num=String(idx+1).padStart(2,'0');
+const head=document.createElement('header');
+head.className='card-head';
+head.innerHTML=`<div class="avatar">${escapeHtml(av)}</div><div class="identity"><span class="index-tag">Profile #${num}</span><h2 class="card-title">${escapeHtml(name)}${aka?` <span class="handle-pill">${escapeHtml(aka)}</span>`:''}</h2></div><button class="collapse-btn" type="button" aria-expanded="true" aria-label="Toggle profile"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>`;
+card.prepend(head);
+card.querySelectorAll('.receipt-list code').forEach(el=>{
+const m=el.textContent.match(/^(\[\d{1,2}\/\d{1,2}[^\]]*\])\s*([\s\S]*)$/);
+if(m)el.innerHTML=`<span class="ts">${escapeHtml(m[1])}</span> ${escapeHtml(m[2])}`;
+});
+});
+
+if(sidebarCount)sidebarCount.textContent=cards.length+' Total';
+function setCollapsed(card,collapsed){
+card.classList.toggle('collapsed',collapsed);
+const btn=card.querySelector('.collapse-btn');
+if(btn)btn.setAttribute('aria-expanded',String(!collapsed));
+}
+
+const navItems=[];
+cards.forEach((card,idx)=>{
+const titleEl=card.querySelector('.card-title');
+const handleEl=card.querySelector('.handle-pill');
+const avatarEl=card.querySelector('.avatar');
+const hue=card.style.getPropertyValue('--hue')||'220';
+const fullTitle=titleEl&&titleEl.childNodes[0]?titleEl.childNodes[0].textContent.trim():card.id;
+const handleText=handleEl?handleEl.textContent.trim():'';
+const initials=avatarEl?avatarEl.textContent.trim():String(idx+1);
+const li=document.createElement('li');
+li.className='nav-item';
+const a=document.createElement('a');
+a.href='#'+card.id;
+a.dataset.target=card.id;
+a.innerHTML=`<span class="nav-dot" style="--hue:${hue}">${escapeHtml(initials)}</span><span class="nav-meta"><span class="nav-name">${idx+1}. ${escapeHtml(fullTitle)}</span><span class="nav-handle">${escapeHtml(handleText)}</span></span>`;
+a.addEventListener('click',e=>{
+e.preventDefault();
+if(card.classList.contains('is-hidden')){searchInput.value='';applyFilter('')}
+setCollapsed(card,false);
+closeMobileSidebar();
+card.scrollIntoView({behavior:'smooth',block:'start'});
+card.classList.remove('flash');
+void card.offsetWidth;
+card.classList.add('flash');
+setTimeout(()=>card.classList.remove('flash'),1200);
+});
+li.appendChild(a);
+navList.appendChild(li);
+navItems.push({li,a,card});
+});
+
+cards.forEach(card=>{
+const head=card.querySelector('.card-head');
+if(head)head.addEventListener('click',()=>setCollapsed(card,!card.classList.contains('collapsed')));
+});
+expandAllBtn.addEventListener('click',()=>cards.forEach(c=>setCollapsed(c,false)));
+collapseAllBtn.addEventListener('click',()=>cards.forEach(c=>setCollapsed(c,true)));
+
+function applyFilter(rawQuery){
+const q=rawQuery.trim().toLowerCase();
+clearSearch.classList.toggle('visible',q.length>0);
+let visibleCount=0;
+navItems.forEach(({li,card})=>{
+const matched=!q||card.textContent.toLowerCase().includes(q);
+card.classList.toggle('is-hidden',!matched);
+li.classList.toggle('hidden-match',!matched);
+if(matched)visibleCount++;
+});
+matchStatus.textContent=q?`Showing ${visibleCount} of ${cards.length} profiles`:`Showing all ${cards.length} profiles`;
+emptyState.classList.toggle('visible',visibleCount===0);
+}
+searchInput.addEventListener('input',e=>applyFilter(e.target.value));
+clearSearch.addEventListener('click',()=>{searchInput.value='';applyFilter('');searchInput.focus()});
+
+function toggleTheme(){
+const root=document.documentElement;
+const next=root.getAttribute('data-theme')==='dark'?'light':'dark';
+root.setAttribute('data-theme',next);
+try{localStorage.setItem('master_dossier_theme',next)}catch(_){}
+}
+try{const saved=localStorage.getItem('master_dossier_theme');if(saved==='light'||saved==='dark')document.documentElement.setAttribute('data-theme',saved)}catch(_){}
+themeBtn.addEventListener('click',toggleTheme);
+mobileThemeBtn.addEventListener('click',toggleTheme);
+
+function openMobileSidebar(){sidebar.classList.add('open');backdrop.classList.add('open')}
+function closeMobileSidebar(){sidebar.classList.remove('open');backdrop.classList.remove('open')}
+menuBtn.addEventListener('click',openMobileSidebar);
+backdrop.addEventListener('click',closeMobileSidebar);
+
+function onScroll(){
+const doc=document.documentElement;
+const scrollTop=window.scrollY||doc.scrollTop;
+const maxScroll=doc.scrollHeight-doc.clientHeight;
+progressBar.style.width=(maxScroll>0?Math.min(100,(scrollTop/maxScroll)*100):0)+'%';
+backTop.classList.toggle('visible',scrollTop>450);
+const firstVisible=cards.find(c=>!c.classList.contains('is-hidden'));
+if(!firstVisible)return;
+let activeId=firstVisible.id;
+for(const card of cards){if(!card.classList.contains('is-hidden')&&card.getBoundingClientRect().top<=160)activeId=card.id}
+navItems.forEach(({a})=>a.classList.toggle('active',a.dataset.target===activeId));
+}
+window.addEventListener('scroll',onScroll,{passive:true});
+backTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+onScroll();
+})();
+</script>
+</body>
+</html>
